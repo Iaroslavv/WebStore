@@ -8,46 +8,75 @@
                 <div class="card fat">
                     <div class="card-body">
                         <h4 class="card-title">Register</h4>
-                        <form method="POST" class="my-login-validation" novalidate="">
+                        <form method="POST">
                             <div class="form-group">
-                                <label for="name">Name</label>
-                                <input id="name" type="text" class="form-control" name="name" required autofocus>
+                                {{ form.name.label(class="form-control-label") }}
+                
+                                {% if form.name.errors %}
+                                {{ form.name(class="form-control form-control") }}
                                 <div class="invalid-feedback">
-                                    What's your name?
+                                    {% for error in form.name.errors %}
+                                    <span>{{ error }}</span>
+                                    {% endfor %}
                                 </div>
+                                {% else %}
+                                    {{ form.name(class="form-control form-control") }}
+                                {% endif %}
+                
                             </div>
 
                             <div class="form-group">
-                                <label for="email">E-Mail Address</label>
-                                <input id="email" type="email" class="form-control" name="email" required>
+                                {{ form.email.label(class="form-control-label") }}
+                
+                                {% if form.email.errors %}
+                                {{ form.email(class="form-control form-control") }}
                                 <div class="invalid-feedback">
-                                    Your email is invalid
+                                    {% for error in form.email.errors %}
+                                    <span>{{ error }}</span>
+                                    {% endfor %}
                                 </div>
+                                {% else %}
+                                    {{ form.email(class="form-control form-control") }}
+                                {% endif %}
+                
                             </div>
 
                             <div class="form-group">
-                                <label for="password">Password</label>
-                                <input id="password" type="password" class="form-control" name="password" required data-eye>
+                                {{ form.password.label(class="form-control-label") }}
+                
+                                {% if form.password.errors %}
+                                {{ form.password(class="form-control form-control") }}
                                 <div class="invalid-feedback">
-                                    Password is required
+                                    {% for error in form.password.errors %}
+                                    <span>{{ error }}</span>
+                                    {% endfor %}
                                 </div>
+                                {% else %}
+                                    {{ form.password(class="form-control form-control") }}
+                                {% endif %}
+                
                             </div>
 
                             <div class="form-group">
-                                <label for="password">Confirm your password</label>
-                                <input id="password" type="password" class="form-control" name="password" required data-eye>
+                                {{ form.confirm_password.label(class="form-control-label") }}
+                
+                                {% if form.confirm_password.errors %}
+                                {{ form.confirm_password(class="form-control form-control") }}
                                 <div class="invalid-feedback">
-                                    Password is required
+                                    {% for error in form.confirm_password.errors %}
+                                    <span>{{ error }}</span>
+                                    {% endfor %}
                                 </div>
+                                {% else %}
+                                    {{ form.confirm_password(class="form-control form-control") }}
+                                {% endif %}
                             </div>
 
                             <div class="form-group m-0"> 
-                                <button type="submit" class="btn btn-outline-success btn-block">
-                                    Register
-                                </button>
+                                {{ form.submit(class="btn btn-outline-success btn-block") }}
                             </div>
                             <div class="mt-4 text-center">
-                                Already have an account? <a href="#">Login</a>
+                                Already have an account? <a href="{{ url_for('users.login') }}">Login</a>
                             </div>
                             <div class="mt-1 text-center">
                                 <a href="#">Forgot password?</a>
