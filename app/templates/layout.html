@@ -46,16 +46,35 @@
               </form>
         </div>
         <ul class="navbar-nav ml-auto">
+          {% if current_user.is_authenticated %}
+          <li class="nav-item" style="text-align: right;">
+            <a class="nav-link" href="#">Account</a>
+          </li>
+          <li class="nav-item" style="text-align: right;">
+            <a class="nav-link" href="#">Log out</a>
+          </li>
+          {% else %}
             <li class="nav-item" style="text-align: right;">
               <a class="nav-link" href="#">Log In</a>
             </li>
             <li class="nav-item" style="text-align: right;">
-              <a class="nav-link" href="{{ url_for('Users.signup') }}">Sign Up</a>
+              <a class="nav-link" href="{{ url_for('users.signup') }}">Sign Up</a>
             </li>
+            {% endif %}
             </ul>
       </nav>
-
-      {% block content %}{% endblock %}
+      <div class="col-md-8">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            {% for category, message in messages %}
+              <div class="alert alert-{{ category }}">
+                {{ message }}
+              </div>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
+        {% block content %}{% endblock %}
+      </div>
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
