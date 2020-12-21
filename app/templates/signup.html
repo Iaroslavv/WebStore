@@ -9,12 +9,13 @@
                     <div class="card-body">
                         <h4 class="card-title">Register</h4>
                         <form method="POST">
+                            {{ form.hidden_tag() }}
                             <div class="form-group">
                                 {{ form.name.label(class="form-control-label") }}
                 
                                 {% if form.name.errors %}
-                                {{ form.name(class="form-control form-control") }}
-                                <div class="invalid-feedback">
+                                    {{ form.name(class="form-control form-control") }}
+                                    <div class="invalid-feedback">
                                     {% for error in form.name.errors %}
                                     <span>{{ error }}</span>
                                     {% endfor %}
@@ -68,7 +69,7 @@
                                     {% endfor %}
                                 </div>
                                 {% else %}
-                                    {{ form.confirm_password(class="form-control form-control") }}
+                                    {{ form.confirm_password(class="form-control form-control-lg") }}
                                 {% endif %}
                             </div>
 
