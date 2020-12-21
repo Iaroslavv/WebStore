@@ -5,47 +5,52 @@
     <div class="container h-100">
         <div class="row justify-content-md-center h-100">
             <div class="card-wrapper">
-                <div class="brand">
-                    <img src="img/logo.jpg" alt="logo">
-                </div>
                 <div class="card fat">
                     <div class="card-body">
                         <h4 class="card-title">Login</h4>
-                        <form method="POST" class="my-login-validation" novalidate="">
+                        <form method="POST" action="" >
+                            {{ form.hidden_tag() }}
                             <div class="form-group">
-                                <label for="email">E-Mail Address</label>
-                                <input id="email" type="email" class="form-control" name="email" value="" required autofocus>
-                                <div class="invalid-feedback">
-                                    Email is invalid
-                                </div>
+                                {{ form.email.label(class="form-control-label") }}
+                                    {% if form.email.errors %}
+                                    {{ form.email(class="form-control form-control is-invalid") }}
+                                    <div class="invalid-feedback">
+                                        {% for error in form.email.errors %}
+                                            <span>{{ error }}</span>
+                                        {% endfor %}
+                                    </div>
+                                {% else %}
+                                    {{ form.email(class="form-control form-control") }}
+                                {% endif %}
                             </div>
 
                             <div class="form-group">
-                                <label for="password">Password
-                                    <a href="forgot.html" class="float-right">
-                                        Forgot Password?
-                                    </a>
-                                </label>
-                                <input id="password" type="password" class="form-control" name="password" required data-eye>
-                                <div class="invalid-feedback">
-                                    Password is required
-                                </div>
+                                {{ form.password.label(class="form-control-label") }}
+                                    {% if form.password.errors %}
+                                    {{ form.password(class="form-control form-control is-invalid") }}
+                                    <div class="invalid-feedback">
+                                        {% for error in form.password.errors %}
+                                            <span>{{ error }}</span>
+                                        {% endfor %}
+                                    </div>
+                                {% else %}
+                                    {{ form.password(class="form-control form-control") }}
+                                {% endif %}
                             </div>
 
-                            <div class="form-group">
-                                <div class="custom-checkbox custom-control">
-                                    <input type="checkbox" name="remember" id="remember" class="custom-control-input">
-                                    <label for="remember" class="custom-control-label">Remember Me</label>
-                                </div>
+                            <div class="form-check">
+                                {{ form.remember(class="form-check-input") }}
+                                {{ form.remember.label(class="form-check-label") }}
                             </div>
 
                             <div class="form-group m-0">
-                                <button type="submit" class="btn btn-outline-success btn-block">
-                                    Login
-                                </button>
+                                {{ form.submit(class="btn btn-outline-success btn-block") }}
                             </div>
                             <div class="mt-4 text-center">
                                 Don't have an account? <a href="#">Create One</a>
+                                <small class="text-muted ml-2">
+                                    <a href="#">Forgot password?</a>
+                            </small>
                             </div>
                         </form>
                     </div>
