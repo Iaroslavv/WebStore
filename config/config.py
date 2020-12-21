@@ -1,2 +1,5 @@
 DEBUG = True
 SECRET_KEY = "ghfkdybr47"
+SQLALCHEMY_DATABASE_URI = 'sqlite:///webstore.db'
+SQLALCHEMY_TRACK_MODIFICATIONS = False
+SQLALCHEMY_ECHO = False
