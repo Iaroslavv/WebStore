@@ -1,0 +1,94 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="my-login-page">
+<section class="h-100">
+    <div class="container h-100">
+        <div class="row justify-content-md-center h-100">
+            <div class="card-wrapper">
+                <div class="card fat">
+                    <div class="card-body">
+                        <h4 class="card-title">Register</h4>
+                        <form method="POST">
+                            {{ form.hidden_tag() }}
+                            <div class="form-group">
+                                {{ form.name.label(class="form-control-label") }}
+                
+                                {% if form.name.errors %}
+                                    {{ form.name(class="form-control form-control") }}
+                                    <div class="invalid-feedback">
+                                    {% for error in form.name.errors %}
+                                    <span>{{ error }}</span>
+                                    {% endfor %}
+                                </div>
+                                {% else %}
+                                    {{ form.name(class="form-control form-control") }}
+                                {% endif %}
+                
+                            </div>
+
+                            <div class="form-group">
+                                {{ form.email.label(class="form-control-label") }}
+                
+                                {% if form.email.errors %}
+                                {{ form.email(class="form-control form-control") }}
+                                <div class="invalid-feedback">
+                                    {% for error in form.email.errors %}
+                                    <span>{{ error }}</span>
+                                    {% endfor %}
+                                </div>
+                                {% else %}
+                                    {{ form.email(class="form-control form-control") }}
+                                {% endif %}
+                
+                            </div>
+
+                            <div class="form-group">
+                                {{ form.password.label(class="form-control-label") }}
+                
+                                {% if form.password.errors %}
+                                {{ form.password(class="form-control form-control") }}
+                                <div class="invalid-feedback">
+                                    {% for error in form.password.errors %}
+                                    <span>{{ error }}</span>
+                                    {% endfor %}
+                                </div>
+                                {% else %}
+                                    {{ form.password(class="form-control form-control") }}
+                                {% endif %}
+                
+                            </div>
+
+                            <div class="form-group">
+                                {{ form.confirm_password.label(class="form-control-label") }}
+                
+                                {% if form.confirm_password.errors %}
+                                {{ form.confirm_password(class="form-control form-control") }}
+                                <div class="invalid-feedback">
+                                    {% for error in form.confirm_password.errors %}
+                                    <span>{{ error }}</span>
+                                    {% endfor %}
+                                </div>
+                                {% else %}
+                                    {{ form.confirm_password(class="form-control form-control-lg") }}
+                                {% endif %}
+                            </div>
+
+                            <div class="form-group m-0"> 
+                                {{ form.submit(class="btn btn-outline-success btn-block") }}
+                            </div>
+                            <div class="mt-4 text-center">
+                                Already have an account? <a href="{{ url_for('users.login') }}">Login</a>
+                            </div>
+                            <div class="mt-1 text-center">
+                                <a href="#">Forgot password?</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+</div>
+
+  {% endblock %}
