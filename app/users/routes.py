@@ -7,6 +7,7 @@ from app.users.forms import (
     LoginForm,
     RequestResetForm,
     ResetPasswordForm,
+    ChangePassword,
 )
 from app.users.utils import send_reset_email
 
@@ -17,7 +18,6 @@ users = Blueprint("users", __name__)
 @users.route("/", methods=["GET", "POST"])
 def index():
     return render_template("layout.html")
-
 
 
 @users.route("/signup", methods=['GET', 'POST'])
@@ -62,9 +62,17 @@ def logout():
 
 
 @users.route("/account", methods=["GET", "POST"])
-@login_required()
+@login_required
 def account():
-    pass
+    form = ChangePassword()
+    if form.validate_on_submit():
+        user = current_user
+        user.password = bcrypt.generate_password_hash(form.new_password.data).decode("utf-8")
+        db.session.add(user)
+        db.session.commit()
+        flash("Your password has been updated!", "success")
+        return redirect(url_for("users.account"))
+    return render_template("account.html", form=form)
 
 
 @users.route("/reset_password", methods=["GET", "POST"])
@@ -96,4 +104,3 @@ def reset_token(token):
         flash("Your password has been updated!", "success")
         return redirect(url_for("users.login"))
     return render_template("reset_token.html", title="Reset Password", form=form)
-
