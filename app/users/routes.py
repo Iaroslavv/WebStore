@@ -62,6 +62,7 @@ def logout():
 
 
 @users.route("/account", methods=["GET", "POST"])
+@login_required()
 def account():
     pass
 
