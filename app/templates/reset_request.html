@@ -1,0 +1,53 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="my-login-page">
+    <div class="my-login-page">
+        <section class="h-100">
+            <div class="container h-100">
+                <div class="row justify-content-md-center align-items-center h-100">
+                    <div class="card-wrapper">
+                        <div class="card fat">
+                            <div class="card-body">
+                                <h4 class="card-title">Forgot Password</h4>
+                                <form method="POST" class="my-login-validation" novalidate="">
+                                    {{ form.hidden_tag() }}
+                                    <div class="form-group">
+                                        {% if form.email.errors %}
+                                        {{ form.email(class="form-control form-control-lg item is-invalid") }}
+                                        <div class="invalid-feedback">
+                                            {% for error in form.email.errors %}
+                                            <span>{{ error }}</span>
+                                            {% endfor %}
+                                        </div>
+                                        {% else %}
+                                            {{ form.email(class="form-control form-control", placeholder="Email") }}
+                                        {% endif %}
+                                        <div class="form-text text-muted">
+                                            By clicking "Reset Password" we will send a password reset link
+                                        </div>
+                                    </div>
+                                    <div class="form-group m-0">
+                                        {{ form.submit(class="btn btn-outline-success btn-block") }}
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+
+
+
+
+
+
+
+
+</div>
+
+
+
+{% endblock content %}

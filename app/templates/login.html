@@ -47,11 +47,11 @@
                                 {{ form.submit(class="btn btn-outline-success btn-block") }}
                             </div>
                             <div class="mt-4 text-center">
-                                Don't have an account? <a href="#">Create One</a>
-                                <small class="text-muted ml-2">
-                                    <a href="#">Forgot password?</a>
-                            </small>
+                                Don't have an account? <a href="{{ url_for('users.signup') }}">Create One</a>
                             </div>
+                            <small class="text-muted ml-2">
+                                <a href="{{ url_for('users.reset_request') }}">Forgot password?</a>
+                        </small>
                         </form>
                     </div>
                 </div>
