@@ -50,12 +50,24 @@
                 <div class="tab-pane" id="account">
                   <h6>ACCOUNT SETTINGS</h6>
                   <hr>
-                  <form>
+                  <form method="POST">
+                    {{ form.hidden_tag() }}
                     <div class="form-group">
-                      <label for="username">Username</label>
-                      <input type="text" class="form-control" id="username" aria-describedby="usernameHelp" placeholder="Enter your username" value="kennethvaldez">
+                      {% if change_name.new_name.errors %}
+                      {{ change_name.new_name(class="form-control form-control is-invalid") }}
+                      <div class="invalid-feedback">
+                          {% for error in form.new_name.errors %}
+                          <span>{{ error }}</span>
+                          {% endfor %}
+                      </div>
+                      {% else %}
+                          {{ change_name.new_name(class="form-control form-control", placeholder="Enter new name") }}
+                      {% endif %}
                       <small id="usernameHelp" class="form-text text-muted">After changing your username, your old username becomes available for anyone else to claim.</small>
-                    </div>
+                      <div class="form-group m-0">
+                          {{ change_name.submit2(class="btn btn-outline-success") }}
+                      </div>
+                  </div>
                     <hr>
                     <div class="form-group">
                       <label class="d-block text-danger">Delete Account</label>
@@ -103,7 +115,7 @@
                         {% endif %}
                         <hr>
                         <div class="form-group m-0">
-                            {{ form.submit(class="btn btn-outline-success") }}
+                            {{ form.submit1(class="btn btn-outline-success") }}
                         </div>
                     </div>
                   </form>

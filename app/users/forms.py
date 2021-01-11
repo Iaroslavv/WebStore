@@ -7,7 +7,8 @@ from app.models import User
 
 class SignUpForm(FlaskForm):
     name = StringField("Name", validators=[DataRequired(),
-                                           Length(min=2, max=20)])
+                                           Length(min=2, max=20,
+                                                  message="Name must be minimum 4 characters long.")])
     email = EmailField("Email", validators=[DataRequired()])
     password = PasswordField("Password", validators=[DataRequired()])
     confirm_password = PasswordField("Confirm Password",
@@ -56,4 +57,14 @@ class ChangePassword(FlaskForm):
     confirm_password = PasswordField("Confirm Password",
                                      validators=[DataRequired(),
                                                  EqualTo("new_password")])
-    submit = SubmitField("Update Password")
+    submit1 = SubmitField("Update Password")
+
+
+class ChangeName(FlaskForm):
+    new_name = StringField("Evgeny", validators=[DataRequired(), Length(min=2, max=20)])
+    submit2 = SubmitField("Update")
+
+    def validate_name(self, field):
+        name = User.query.filter_by(name=field.data).first()
+        if name:
+            raise ValidationError("The user with this name already exists!")
