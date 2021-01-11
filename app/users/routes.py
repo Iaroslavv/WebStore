@@ -8,6 +8,7 @@ from app.users.forms import (
     RequestResetForm,
     ResetPasswordForm,
     ChangePassword,
+    ChangeName,
 )
 from app.users.utils import send_reset_email
 
@@ -65,14 +66,22 @@ def logout():
 @login_required
 def account():
     form = ChangePassword()
-    if form.validate_on_submit():
+    change_name = ChangeName()
+    if form.submit1.data and form.validate_on_submit():
         user = current_user
         user.password = bcrypt.generate_password_hash(form.new_password.data).decode("utf-8")
         db.session.add(user)
         db.session.commit()
         flash("Your password has been updated!", "success")
         return redirect(url_for("users.account"))
-    return render_template("account.html", form=form)
+    if change_name.submit2.data and change_name.validate_on_submit():
+        user = current_user
+        user.name = change_name.new_name.data
+        db.session.add(user)
+        db.session.commit()
+        flash("Your name has been changed!", "success")
+        return redirect(url_for("users.account"))
+    return render_template("account.html", form=form, change_name=change_name)
 
 
 @users.route("/reset_password", methods=["GET", "POST"])
