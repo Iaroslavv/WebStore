@@ -49,8 +49,7 @@ def login():
             login_user(user, remember=form.remember.data)
             next_page = request.args.get('next')   # args is a dict
             flash('Successfully logged in!', 'success')
-            return redirect(next_page) if next_page else redirect(url_for('users.index'))
-                                                                                   
+            return redirect(next_page) if next_page else redirect(url_for('users.index'))                                                                       
         else:
             flash('Login unsuccessful. Please check your email address and password and try again', 'danger')
     return render_template('login.html', title='Login', form=form)
@@ -67,14 +66,14 @@ def logout():
 def account():
     form = ChangePassword()
     change_name = ChangeName()
-    if form.submit1.data and form.validate_on_submit():
+    if form.validate_on_submit() and form.submit1.data:
         user = current_user
         user.password = bcrypt.generate_password_hash(form.new_password.data).decode("utf-8")
         db.session.add(user)
         db.session.commit()
         flash("Your password has been updated!", "success")
         return redirect(url_for("users.account"))
-    if change_name.submit2.data and change_name.validate_on_submit():
+    if change_name.validate_on_submit() and change_name.submit2.data:
         user = current_user
         user.name = change_name.new_name.data
         db.session.add(user)
