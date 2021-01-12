@@ -27,7 +27,7 @@ def signup():
         return redirect(url_for('users.index'))
     form = SignUpForm()
     if form.validate_on_submit():
-        hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')  # hashing a password
+        hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
         user = User(name=form.name.data,
                     email=form.email.data,
                     password=hashed_password)
@@ -35,6 +35,13 @@ def signup():
         db.session.commit()
         flash('Your account has been created! You are now able to log in', 'success')
         return redirect(url_for('users.login'))
+    else:
+        user_by_name = User.query.filter_by(name=form.name.data).first()
+        user_by_email = User.query.filter_by(email=form.email.data).first()
+        if user_by_name:
+            flash("The user with this name already exists!", "danger")
+        if user_by_email:
+            flash("The user with this email already exists!", "danger")
     return render_template('signup.html', title='Sign Up', form=form)
 
 
@@ -74,11 +81,14 @@ def account():
         flash("Your password has been updated!", "success")
         return redirect(url_for("users.account"))
     if change_name.validate_on_submit() and change_name.submit2.data:
-        user = current_user
-        user.name = change_name.new_name.data
-        db.session.add(user)
-        db.session.commit()
-        flash("Your name has been changed!", "success")
+        if not User.query.filter_by(name=change_name.new_name.data).first():
+            user = current_user
+            user.name = change_name.new_name.data
+            db.session.add(user)
+            db.session.commit()
+            flash("Your name has been changed!", "success")
+        else:
+            flash("This username is already taken. Please choose another one", "danger")
         return redirect(url_for("users.account"))
     return render_template("account.html", form=form, change_name=change_name)
 
