@@ -9,6 +9,7 @@ from app.users.forms import (
     ResetPasswordForm,
     ChangePassword,
     ChangeName,
+    DeleteAccount,
 )
 from app.users.utils import send_reset_email
 
@@ -73,6 +74,7 @@ def logout():
 def account():
     form = ChangePassword()
     change_name = ChangeName()
+    del_account = DeleteAccount()
     if form.validate_on_submit() and form.submit1.data:
         user = current_user
         user.password = bcrypt.generate_password_hash(form.new_password.data).decode("utf-8")
@@ -90,7 +92,14 @@ def account():
         else:
             flash("This username is already taken. Please choose another one", "danger")
         return redirect(url_for("users.account"))
-    return render_template("account.html", form=form, change_name=change_name)
+    if del_account.validate() and del_account.submit3.data:
+        user = current_user
+        db.session.delete(user)
+        db.session.commit()
+        flash("Your account has been deleted. Hope to see you again!", "success")
+        return redirect(url_for("users.signup"))
+    return render_template("account.html", form=form,
+                           change_name=change_name, del_account=del_account)
 
 
 @users.route("/reset_password", methods=["GET", "POST"])
