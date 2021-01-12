@@ -61,10 +61,13 @@ class ChangePassword(FlaskForm):
 
 
 class ChangeName(FlaskForm):
-    new_name = StringField("Evgeny", validators=[DataRequired(), Length(min=2, max=20)])
+    new_name = StringField("Evgeny", validators=[Length(min=2, max=20)])
     submit2 = SubmitField("Update")
 
     def validate_name(self, field):
         name = User.query.filter_by(name=field.data).first()
         if name:
             raise ValidationError("The user with this name already exists!")
+
+class DeleteAccount(FlaskForm):
+    submit3 = SubmitField("Yes, delete my account")
