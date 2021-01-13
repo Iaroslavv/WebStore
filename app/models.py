@@ -46,7 +46,7 @@ class Product(db.Model):
     __tablename__ = "product"
 
     id = db.Column(db.Integer, primary_key=True)
-    product_namy = db.Column(db.String(64), unique=True, nullable=False)
+    product_name = db.Column(db.String(64), unique=True, nullable=False)
     summary = db.Column(db.String(160), nullable=False)
     description = db.Column(db.String(440), nullable=False)
     picture = db.Column(db.String())
@@ -56,11 +56,14 @@ class Product(db.Model):
     category_id = db.Column(db.Integer, db.ForeignKey("category.id"))
     
     def __repr__(self):
-        return f"Product('{self.name}', '{self.summary}', '{self.description}', '{self.price}')"
+        return f"Product('{self.product_name}', '{self.summary}', '{self.description}', '{self.price}')"
 
 
 class Category(db.Model):
     __tablename__ = "category"
     id = db.Column(db.Integer, primary_key=True)
     category_name = db.Column(db.String(30))
-    product_id = db.relationship("Product", backref="product", lazy=True)
+    product_cat = db.relationship("Product", backref="product", lazy=True)
+    
+    def __repr__(self):
+        return f"Product('{self.category_name}')"
