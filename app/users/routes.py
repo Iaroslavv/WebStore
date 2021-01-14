@@ -131,3 +131,8 @@ def reset_token(token):
         flash("Your password has been updated!", "success")
         return redirect(url_for("users.login"))
     return render_template("reset_token.html", title="Reset Password", form=form)
+
+
+@users.route("/products", methods=["GET", "POST"])
+def products():
+    return render_template("products.html")
