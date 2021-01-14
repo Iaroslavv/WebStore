@@ -9,6 +9,7 @@ def load_user(user_id):
     return User.query.get(int(user_id))
 
 
+# a m2m table to connect relation between user and chosen products
 user_prod = db.Table("user_prod",
         db.Column("user_id", db.Integer, db.ForeignKey("user.id")),
         db.Column("product_id", db.Integer, db.ForeignKey("product.id"))
@@ -49,9 +50,10 @@ class Product(db.Model):
     product_name = db.Column(db.String(64), unique=True, nullable=False)
     summary = db.Column(db.String(160), nullable=False)
     description = db.Column(db.String(440), nullable=False)
-    picture = db.Column(db.String())
+    picture = db.Column(db.String(20), nullable=False, default="iphone.jpg")
     product_amount = db.Column(db.Integer, default=0)
     price = db.Column(db.Integer, default=0)
+    category = db.Column(db.String(30), nullable=False)
     
     category_id = db.Column(db.Integer, db.ForeignKey("category.id"))
     
@@ -66,4 +68,4 @@ class Category(db.Model):
     product_cat = db.relationship("Product", backref="product", lazy=True)
     
     def __repr__(self):
-        return f"Product('{self.category_name}')"
+        return f"Category('{self.category_name}')"
