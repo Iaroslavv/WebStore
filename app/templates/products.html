@@ -5,84 +5,38 @@
         <div class="card bg-light mb-5" id="categoris">
             <div class="card-header text-black text-uppercase"><i class="fa fa-list"></i> Categories</div>
             <ul class="list-group category_block">
-                <li class="list-group-item"><a href="category.html">Laptops</a></li>
-                <li class="list-group-item"><a href="category.html">Phones</a></li>
+                <li class="list-group-item"><a href="{{ url_for('users.phones') }}">Laptops</a></li>
+                <li class="list-group-item"><a href="{{ url_for('users.phones') }}">Phones</a></li>
             </ul>
         </div>
+        {% for product in products %}
         <div class="col-md-10 px-5">
             <div class="row p-2 bg-white border rounded">
-                <div class="col-md-3 mt-1"><img class="img-fluid img-responsive rounded product-image" src="https://i.imgur.com/QpjAiHq.jpg"></div>
+                <div class="col-md-3 mt-1"><img class="img-fluid img-responsive rounded product-image" src="static/pics/{{ product.picture }}"></div>
                 <div class="col-md-6 mt-1">
-                    <h5>Product name</h5>
+                    <h5>{{ product.product_name }}</h5>
+                
                     <div class="d-flex flex-row">
                         <div class="ratings mr-2"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i></div><span>Reviews count</span>
                     </div>
-                    <div class="mt-1 mb-1 spec-1"><span>Short description</span></div>
-                    <p class="text-justify text-truncate para mb-0">There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable.<br><br></p>
+                    <div class="mt-1 mb-1 spec-1"><span>{{ product.summary }}</span></div>
+                    <p class="text-justify text-truncate para mb-0">{{ product.description }}<br><br></p>
                 </div>
                 <div class="align-items-center align-content-center col-md-3 border-left mt-1">
                     <div class="d-flex flex-row align-items-center">
-                        <h4 class="mr-1">$13.99</h4>
+                        <h4 class="mr-1">${{product.price}}</h4>
                     </div>
                     <h6 class="text-success">Free shipping</h6>
-                    <div class="d-flex flex-column mt-4"><button class="btn btn-primary btn-sm" type="button">Details</button><button class="btn btn-outline-primary btn-sm mt-2" type="button">Add to cart</button></div>
-                </div>
-            </div>
-            <div class="row p-2 bg-white border rounded">
-                <div class="col-md-3 mt-1"><img class="img-fluid img-responsive rounded product-image" src="https://i.imgur.com/QpjAiHq.jpg"></div>
-                <div class="col-md-6 mt-1">
-                    <h5>Product name</h5>
-                    <div class="d-flex flex-row">
-                        <div class="ratings mr-2"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i></div><span>Reviews count</span>
-                    </div>
-                    <div class="mt-1 mb-1 spec-1"><span>Short description</span></div>
-                    <p class="text-justify text-truncate para mb-0">There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable.<br><br></p>
-                </div>
-                <div class="align-items-center align-content-center col-md-3 border-left mt-1">
-                    <div class="d-flex flex-row align-items-center">
-                        <h4 class="mr-1">$13.99</h4>
-                    </div>
-                    <h6 class="text-success">Free shipping</h6>
-                    <div class="d-flex flex-column mt-4"><button class="btn btn-primary btn-sm" type="button">Details</button><button class="btn btn-outline-primary btn-sm mt-2" type="button">Add to cart</button></div>
-                </div>
-            </div>
-            <div class="row p-2 bg-white border rounded">
-                <div class="col-md-3 mt-1"><img class="img-fluid img-responsive rounded product-image" src="https://i.imgur.com/QpjAiHq.jpg"></div>
-                <div class="col-md-6 mt-1">
-                    <h5>Product name</h5>
-                    <div class="d-flex flex-row">
-                        <div class="ratings mr-2"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i></div><span>Reviews count</span>
-                    </div>
-                    <div class="mt-1 mb-1 spec-1"><span>Short description</span></div>
-                    <p class="text-justify text-truncate para mb-0">There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable.<br><br></p>
-                </div>
-                <div class="align-items-center align-content-center col-md-3 border-left mt-1">
-                    <div class="d-flex flex-row align-items-center">
-                        <h4 class="mr-1">$13.99</h4>
-                    </div>
-                    <h6 class="text-success">Free shipping</h6>
-                    <div class="d-flex flex-column mt-4"><button class="btn btn-primary btn-sm" type="button">Details</button><button class="btn btn-outline-primary btn-sm mt-2" type="button">Add to cart</button></div>
-                </div>
-            </div>
-            <div class="row p-2 bg-white border rounded">
-                <div class="col-md-3 mt-1"><img class="img-fluid img-responsive rounded product-image" src="https://i.imgur.com/QpjAiHq.jpg"></div>
-                <div class="col-md-6 mt-1">
-                    <h5>Product name</h5>
-                    <div class="d-flex flex-row">
-                        <div class="ratings mr-2"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i></div><span>Reviews count</span>
-                    </div>
-                    <div class="mt-1 mb-1 spec-1"><span>Short description</span></div>
-                    <p class="text-justify text-truncate para mb-0">There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable.<br><br></p>
-                </div>
-                <div class="align-items-center align-content-center col-md-3 border-left mt-1">
-                    <div class="d-flex flex-row align-items-center">
-                        <h4 class="mr-1">$13.99</h4>
-                    </div>
-                    <h6 class="text-success">Free shipping</h6>
-                    <div class="d-flex flex-column mt-4"><button class="btn btn-primary btn-sm" type="button">Details</button><button class="btn btn-outline-primary btn-sm mt-2" type="button">Add to cart</button></div>
+                    {% if product.product_amount >0 %}
+                    <div class="mt-1 mb-1 spec-1"><span>{{ product.product_amount }} available now</span></div>
+                    {% else %}
+                    <div class="mt-1 mb-1 spec-1" style="color: red;"><span>No available</span></div>
+                    {% endif %}
+                    <div class="d-flex flex-column mt-4"><button class="btn btn-primary btn-sm" type="button">Details</button><button class="btn btn-outline-success btn-sm mt-2" type="button">Add to cart</button></div>
                 </div>
             </div>
         </div>
+        {% endfor %}
     </div>
 </div>
 
