@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, url_for, redirect, flash, request
 from app import db, bcrypt
-from app.models import User
+from app.models import User, Product
 from flask_login import current_user, login_user, login_required, logout_user
 from app.users.forms import (
     SignUpForm,
@@ -135,4 +135,5 @@ def reset_token(token):
 
 @users.route("/products", methods=["GET", "POST"])
 def products():
-    return render_template("products.html")
+    products = Product.query.all()
+    return render_template("products.html", products=products)
