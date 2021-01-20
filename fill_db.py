@@ -26,7 +26,7 @@ def save_picture(form_picture):
     random_hex = secrets.token_hex(8)
     _, f_ext = os.path.splitext(form_picture.filename)
     picture_fn = random_hex + f_ext
-    picture_path = os.path.join(app.root_path, 'static/pics', picture_fn)
+    picture_path = os.path.join(app.root_path, 'static/pics/iphone.jpg', picture_fn)
     form_picture.save(picture_path)
     #   compress pics to save memory
     output_size = (125, 125)
@@ -41,17 +41,17 @@ def add_products():
 
     phone1 = Product(product_name="Iphone", summary="New model of Iphone", category="Phones",
                       description="It has come out on the market this winter and deserves attention!",
-                      product_amount=10, price=550)
+                      product_amount=10, price=550, picture='iphone.jpg')
     phone2 = Product(product_name="Xiaomi", summary="New model of Xiaomi", category="Phones",
                       description="It has come out on the market this winter and deserves attention!",
-                      product_amount=10, price=550)
+                      product_amount=10, price=550, picture='iphone.jpg')
 
     laptop1 = Product(product_name="Ipad", summary="New model of Ipad", category="Laptops",
                       description="It has come out on the market this winter and deserves attention!",
-                      product_amount=12, price=660)
+                      product_amount=12, price=660, picture='ipad.jpg')
     laptop2 = Product(product_name="Xiaomi Ipad", summary="New model of Xiaomi Ipad", category="Laptops",
                       description="It has come out on the market this winter and deserves attention!",
-                      product_amount=12, price=660)
+                      product_amount=12, price=660, picture='ipad.jpg')
     db.session.add(phone1)
     db.session.add(phone2)
     db.session.add(laptop1)
