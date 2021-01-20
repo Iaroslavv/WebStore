@@ -148,5 +148,4 @@ def phones():
 @users.route("/products/laptops", methods=["GET", "POST"])
 def laptops():
     find_laptops = Product.query.filter_by(category="Laptops").all()
-    print(Category.query.product_cat.all())
     return render_template("laptops.html", find_laptops=find_laptops)

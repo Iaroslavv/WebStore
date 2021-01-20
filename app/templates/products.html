@@ -1,4 +1,4 @@
-{% extends "layout.html" %}
+{% include "layout.html" %}
 {% block content %}
 <div class="container mt-5 mb-5">
     <div class="d-flex justify-content-center row">
@@ -9,6 +9,7 @@
                 <li class="list-group-item"><a href="{{ url_for('users.phones') }}">Phones</a></li>
             </ul>
         </div>
+        {% block items %}
         {% for product in products %}
         <div class="col-md-10 px-5">
             <div class="row p-2 bg-white border rounded">
@@ -37,6 +38,7 @@
             </div>
         </div>
         {% endfor %}
+        {% endblock items %}
     </div>
 </div>
 

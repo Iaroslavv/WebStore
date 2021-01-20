@@ -1,4 +1,4 @@
-{% extends "layout.html" %}
+{% extends "products.html" %}
 {% block content %}
 <div class="container mt-5 mb-5">
     <div class="d-flex justify-content-center row">
@@ -12,7 +12,7 @@
         {% for phone in find_phones %}
         <div class="col-md-10 px-5">
             <div class="row p-2 bg-white border rounded">
-                <div class="col-md-3 mt-1"><img class="img-fluid img-responsive rounded product-image" src="static/pics/{{ phone.picture }}"></div>
+                <div class="col-md-3 mt-1"><img class="img-fluid img-responsive rounded product-image" src="{{ phone.picture }}" alt="iphone"></div>
                 <div class="col-md-6 mt-1">
                     <h5>{{ phone.product_name }}</h5>
                 
