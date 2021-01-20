@@ -1,20 +1,24 @@
 {% include "layout.html" %}
 {% block content %}
-<div class="container mt-5 mb-5">
-    <div class="d-flex justify-content-center row">
-        <div class="card bg-light mb-5" id="categories">
-            
-        <div class="list-group">
-            <div class="row">
-                <div class="list-group" id="myList" role="tablist">
-                    <a class="list-group-item list-group-item-action active" data-toggle="list" href="#home" role="tab">Home</a>
-                    <a class="list-group-item list-group-item-action" data-toggle="list" href="#profile" role="tab">Profile</a>
-                    <a class="list-group-item list-group-item-action" data-toggle="list" href="#messages" role="tab">Messages</a>
-                    <a class="list-group-item list-group-item-action" data-toggle="list" href="#settings" role="tab">Settings</a>
-                  </div>
+
+<div class="list-group">
+    <div class="row">
+        <div class="col-6 col-sm-4">
+        <div class="list-group" id="myList" style="width: 170px; text-align: center;">
+            <div class="card-header text-black text-uppercase"><i class="fa fa-list"></i> Categories</div>
+            <ul class="list-group category_block">
+            <li class="list-group-item"> <a href="{{ url_for('users.phones') }}">Phones</a></li> 
+            <li class="list-group-item"> <a href="{{ url_for('users.laptops') }}">Laptops</a></li>
+        </ul>
+        <div class="card-header text-black text-uppercase"><i class="fa fa-list"></i> Filters</div>
+          </div>
+        </div>
     </div>
 </div>
-        </div>
+
+
+<div class="container">
+    <div class="d-flex justify-content-center row">
         {% for product in products %}
         <div class="col-md-10 px-5">
             <div class="row p-2 bg-white border rounded">
