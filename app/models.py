@@ -50,7 +50,7 @@ class Product(db.Model):
     product_name = db.Column(db.String(64), unique=True, nullable=False)
     summary = db.Column(db.String(160), nullable=False)
     description = db.Column(db.String(440), nullable=False)
-    picture = db.Column(db.String(20), nullable=False, default="iphone.jpg")
+    picture = db.Column(db.String(20), nullable=False)
     product_amount = db.Column(db.Integer, default=0)
     price = db.Column(db.Integer, default=0)
     category = db.Column(db.String(30), nullable=False)
