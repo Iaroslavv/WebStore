@@ -1,23 +1,8 @@
 {% include "layout.html" %}
 {% block content %}
 
-<div class="list-group">
-    <div class="row">
-        <div class="col-6 col-sm-4">
-        <div class="list-group" id="myList" style="width: 170px; text-align: center;">
-            <div class="card-header text-black text-uppercase"><i class="fa fa-list"></i> Categories</div>
-            <ul class="list-group category_block">
-            <li class="list-group-item"> <a href="{{ url_for('users.phones') }}">Phones</a></li> 
-            <li class="list-group-item"> <a href="{{ url_for('users.laptops') }}">Laptops</a></li>
-        </ul>
-        <div class="card-header text-black text-uppercase"><i class="fa fa-list"></i> Filters</div>
-          </div>
-        </div>
-    </div>
-</div>
 
-
-<div class="container">
+<div class="container" id="products">
     <div class="d-flex justify-content-center row">
         {% for product in products %}
         <div class="col-md-10 px-5">
@@ -37,7 +22,7 @@
                         <h4 class="mr-1">${{product.price}}</h4>
                     </div>
                     <h6 class="text-success">Free shipping</h6>
-                    {% if product.product_amount >0 %}
+                    {% if product.product_amount > 0 %}
                     <div class="mt-1 mb-1 spec-1"><span>{{ product.product_amount }} available now</span></div>
                     {% else %}
                     <div class="mt-1 mb-1 spec-1" style="color: red;"><span>No available</span></div>
