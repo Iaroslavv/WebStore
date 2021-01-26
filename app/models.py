@@ -16,20 +16,23 @@ user_prod = db.Table("user_prod",
         )
 
 
+
+
 class User(db.Model, UserMixin):
     __tablename__ = "user"
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(100), unique=True, nullable=False)
     name = db.Column(db.String(50), unique=True, nullable=False)
     password = db.Column(db.String(100), nullable=False)
-
+    
     user_products = db.relationship("Product", secondary=user_prod,
                                     backref=db.backref("products", lazy="dynamic"))
+    cart = db.relationship("Cart", backref="user")
 
     def get_reset_token(self, expires_sec=1800):
         serial = Serializer(current_app.config["SECRET_KEY"], expires_sec)
         return serial.dumps({"user_id": self.id}).decode("utf-8")
-    
+   
     @staticmethod
     def verify_reset_token(token) -> str:
         serial = Serializer(current_app.config["SECRET_KEY"])
@@ -52,20 +55,31 @@ class Product(db.Model):
     description = db.Column(db.String(440), nullable=False)
     picture = db.Column(db.String(20), nullable=False)
     product_amount = db.Column(db.Integer, default=0)
-    price = db.Column(db.Integer, default=0)
+    price = db.Column(db.Float, default=0)
     category = db.Column(db.String(30), nullable=False)
     
+    cart_id = db.Column(db.Integer, db.ForeignKey("cart.id"))
     category_id = db.Column(db.Integer, db.ForeignKey("category.id"))
     
     def __repr__(self):
         return f"Product('{self.product_name}', '{self.summary}', '{self.description}', '{self.price}')"
 
 
+# one2many relationship between Category and Product
 class Category(db.Model):
     __tablename__ = "category"
     id = db.Column(db.Integer, primary_key=True)
     category_name = db.Column(db.String(30))
     product_cat = db.relationship("Product", backref="product", lazy=True)
-    
+  
     def __repr__(self):
         return f"Category('{self.category_name}')"
+ 
+
+# one to many relationship between Cart and Product
+class Cart(db.Model):
+    __tablename__ = "cart"
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey("user.id"))
+    user_cart_prod = db.relationship("Product", backref="user")
+
