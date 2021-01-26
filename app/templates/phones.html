@@ -1,19 +1,5 @@
 {% extends "products.html" %}
 {% block content %}
-<div class="list-group">
-    <div class="row">
-        <div class="col-6 col-sm-4">
-        <div class="list-group" id="myList" style="width: 170px; text-align: center;">
-            <div class="card-header text-black text-uppercase"><i class="fa fa-list"></i> Categories</div>
-            <ul class="list-group category_block">
-            <li class="list-group-item"> <a href="{{ url_for('users.phones') }}">Phones</a></li> 
-            <li class="list-group-item"> <a href="{{ url_for('users.laptops') }}">Laptops</a></li>
-        </ul>
-        <div class="card-header text-black text-uppercase"><i class="fa fa-list"></i> Filters</div>
-          </div>
-        </div>
-    </div>
-</div>
 <div class="container">
     <div class="d-flex justify-content-center row">
         {% for phone in find_phones %}
