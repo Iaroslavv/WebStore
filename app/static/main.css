@@ -3,7 +3,7 @@ html, body {
 }
 
 body.my-login-page {
-	background-color: #b2b3b4;
+	background-color: #fdfeff;
 	font-size: 14px;
 }
 
@@ -121,7 +121,7 @@ body.my-login-page {
 
 /*PRODUCT LIST */
 body {
-    background: #eee
+    background: rgb(255, 250, 250)
 }
 
 .ratings i {

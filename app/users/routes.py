@@ -149,3 +149,8 @@ def phones():
 def laptops():
     find_laptops = Product.query.filter_by(category="Laptops").all()
     return render_template("laptops.html", find_laptops=find_laptops)
+
+
+@users.route("/cart", methods=["GET", "POST"])
+def cart():
+    return render_template("cart.html")
