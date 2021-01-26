@@ -11,11 +11,9 @@ def load_user(user_id):
 
 # a m2m table to connect relation between user and chosen products
 user_prod = db.Table("user_prod",
-        db.Column("user_id", db.Integer, db.ForeignKey("user.id")),
-        db.Column("product_id", db.Integer, db.ForeignKey("product.id"))
+        db.Column("product_id", db.Integer, db.ForeignKey("product.id")),
+        db.Column("cart_id", db.Integer, db.ForeignKey("cart.id"))
         )
-
-
 
 
 class User(db.Model, UserMixin):
@@ -24,10 +22,7 @@ class User(db.Model, UserMixin):
     email = db.Column(db.String(100), unique=True, nullable=False)
     name = db.Column(db.String(50), unique=True, nullable=False)
     password = db.Column(db.String(100), nullable=False)
-    
-    user_products = db.relationship("Product", secondary=user_prod,
-                                    backref=db.backref("products", lazy="dynamic"))
-    cart = db.relationship("Cart", backref="user")
+    cart = db.relationship("Cart", backref="author")
 
     def get_reset_token(self, expires_sec=1800):
         serial = Serializer(current_app.config["SECRET_KEY"], expires_sec)
@@ -58,7 +53,6 @@ class Product(db.Model):
     price = db.Column(db.Float, default=0)
     category = db.Column(db.String(30), nullable=False)
     
-    cart_id = db.Column(db.Integer, db.ForeignKey("cart.id"))
     category_id = db.Column(db.Integer, db.ForeignKey("category.id"))
     
     def __repr__(self):
@@ -80,6 +74,7 @@ class Category(db.Model):
 class Cart(db.Model):
     __tablename__ = "cart"
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey("user.id"))
-    user_cart_prod = db.relationship("Product", backref="user")
-
+    user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
+    user_products = db.relationship("Product", secondary=user_prod,
+                                    backref=db.backref("products", lazy="dynamic"))
+    quantity = db.Column(db.Integer, default=0)
