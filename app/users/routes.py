@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, url_for, redirect, flash, request
 from app import db, bcrypt
-from app.models import User, Product, Category, Cart
+from app.models import User, Product, Category
 from flask_login import current_user, login_user, login_required, logout_user
 from app.users.forms import (
     SignUpForm,
@@ -10,6 +10,7 @@ from app.users.forms import (
     ChangePassword,
     ChangeName,
     DeleteAccount,
+    AddToCart,
 )
 from app.users.utils import send_reset_email
 
@@ -27,18 +28,12 @@ def signup():
     if current_user.is_authenticated:
         return redirect(url_for('users.index'))
     form = SignUpForm()
-    cart = Cart()
     if form.validate_on_submit():
         hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
         user = User(name=form.name.data,
                     email=form.email.data,
                     password=hashed_password)
         db.session.add(user)
-        db.session.commit()
-        cart.user_id = user.id
-        print("userid", user.id)
-        print("cart author", user.cart)
-        db.session.add(cart)
         db.session.commit()
         flash('Your account has been created! You are now able to log in', 'success')
         return redirect(url_for('users.login'))
@@ -142,7 +137,10 @@ def reset_token(token):
 @users.route("/products", methods=["GET", "POST"])
 def products():
     products = Product.query.all()
-    return render_template("products.html", products=products)
+    add_to_cart = AddToCart()
+    # if add_to_cart.validate_on_submit and add_to_cart.submit4.data:
+        
+    return render_template("products.html", products=products, add_to_cart=add_to_cart)
 
 
 @users.route("/products/phones", methods=["GET", "POST"])
