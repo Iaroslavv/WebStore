@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, url_for, redirect, flash, request
 from app import db, bcrypt
-from app.models import User, Product, Category
+from app.models import User, Product, Category, Cart
 from flask_login import current_user, login_user, login_required, logout_user
 from app.users.forms import (
     SignUpForm,
@@ -27,12 +27,18 @@ def signup():
     if current_user.is_authenticated:
         return redirect(url_for('users.index'))
     form = SignUpForm()
+    cart = Cart()
     if form.validate_on_submit():
         hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
         user = User(name=form.name.data,
                     email=form.email.data,
                     password=hashed_password)
         db.session.add(user)
+        db.session.commit()
+        cart.user_id = user.id
+        print("userid", user.id)
+        print("cart author", user.cart)
+        db.session.add(cart)
         db.session.commit()
         flash('Your account has been created! You are now able to log in', 'success')
         return redirect(url_for('users.login'))
@@ -55,7 +61,7 @@ def login():
         user = User.query.filter_by(email=form.email.data).first()
         if user and bcrypt.check_password_hash(user.password, form.password.data):
             login_user(user, remember=form.remember.data)
-            next_page = request.args.get('next')   # args is a dict
+            next_page = request.args.get('next')
             flash('Successfully logged in!', 'success')
             return redirect(next_page) if next_page else redirect(url_for('users.index'))                                                                       
         else:
