@@ -71,3 +71,7 @@ class ChangeName(FlaskForm):
 
 class DeleteAccount(FlaskForm):
     submit3 = SubmitField("Yes, delete my account")
+
+
+class AddToCart(FlaskForm):
+    submit4 = SubmitField("Add to Cart")
