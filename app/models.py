@@ -22,6 +22,7 @@ class User(db.Model, UserMixin):
     email = db.Column(db.String(100), unique=True, nullable=False)
     name = db.Column(db.String(50), unique=True, nullable=False)
     password = db.Column(db.String(100), nullable=False)
+    prod_amount = db.Column(db.Integer, default=0)
     user_products = db.relationship("Product", secondary=user_prod,
                                     backref=db.backref("products", lazy="dynamic"))
 

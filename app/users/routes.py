@@ -146,15 +146,6 @@ def products():
     if request.method == "POST":
         name = request.form.to_dict()
         return find_product_by_name(name)
-        # if find_product.product_amount < 1:
-        #     flash("This product is unavailable at the moment!", "info")
-        #     return redirect(url_for("users.products"))
-        # else:
-        #     user = current_user
-        #     user.user_products.append(find_product)
-        #     db.session.commit()
-        #     flash(f"{product_name} was successfully added to your cart!", "success")
-        #     return redirect(url_for("users.products"))
     return render_template("products.html", products=products)
 
 
@@ -163,9 +154,12 @@ def find_product_by_name(name):
     product_name = name["name"]
     if find_product.product_amount < 1:
         flash("This product is unavailable ath the moment!", "info")
+        return redirect(url_for("users.products"))
     else:
         user = current_user
         user.user_products.append(find_product)
+        user.prod_amount += 1
+        find_product.product_amount -= 1
         db.session.commit()
         flash(f"{product_name} was successfully added to your cart!", "success")
         return redirect(url_for("users.products"))
@@ -192,6 +186,6 @@ def laptops():
     return render_template("laptops.html", find_laptops=find_laptops)
 
 
-@users.route("/cart", methods=["POST"])
+@users.route("/cart", methods=["POST", "GET"])
 def cart():
     return render_template("cart.html")
