@@ -46,12 +46,16 @@
                                 </div>
                                 <div class="modal-footer">
                                   <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                  <button type="button" class="btn btn-outline-success">Add to cart</button>
+                                  <form method="post" style="width: auto;">
+                                    <button class="btn btn-outline-success mt-2" name="name" value="{{laptop.product_name }}">Add to Cart</button>
+                                 </form>
                                 </div>
                               </div>
                             </div>
                           </div>
-                        <button class="btn btn-outline-success btn-sm mt-2" type="button">Add to cart</button>
+                          <form method="post" style="width: auto;">
+                            <button class="btn btn-outline-success mt-2" name="name" value="{{laptop.product_name }}">Add to Cart</button>
+                         </form>
                     </div>
                 </div>
             </div>

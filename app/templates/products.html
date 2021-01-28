@@ -48,13 +48,17 @@
                                 </div>
                                 <div class="modal-footer">
                                   <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                  {{ add_to_cart.submit4(class="btn btn-outline-success") }}
-                                  <button type="button" class="btn btn-outline-success">Add to cart</button>
+                                  <form method="post" style="width: auto;">
+                                    <button class="btn btn-outline-success mt-2" name="name" value="{{product.product_name }}">Add to Cart</button>
+                                 </form>
                                 </div>
                               </div>
                             </div>
                           </div>
-                          {{ add_to_cart.submit4(class="btn btn-outline-success btn-sm mt-2") }}
+                          <form method="post" style="width: 100%;">
+      
+                            <button class="btn btn-outline-success mt-2" name="name" value="{{product.product_name }}">Add to Cart</button>
+                         </form>
                     </div>
                 </div>
             </div>

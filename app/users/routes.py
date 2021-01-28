@@ -1,6 +1,13 @@
-from flask import Blueprint, render_template, url_for, redirect, flash, request
+from flask import (
+    Blueprint,
+    render_template,
+    url_for, redirect,
+    flash,
+    request,
+    session,
+)
 from app import db, bcrypt
-from app.models import User, Product, Category
+from app.models import User, Product
 from flask_login import current_user, login_user, login_required, logout_user
 from app.users.forms import (
     SignUpForm,
@@ -10,7 +17,6 @@ from app.users.forms import (
     ChangePassword,
     ChangeName,
     DeleteAccount,
-    AddToCart,
 )
 from app.users.utils import send_reset_email
 
@@ -137,24 +143,55 @@ def reset_token(token):
 @users.route("/products", methods=["GET", "POST"])
 def products():
     products = Product.query.all()
-    add_to_cart = AddToCart()
-    # if add_to_cart.validate_on_submit and add_to_cart.submit4.data:
-        
-    return render_template("products.html", products=products, add_to_cart=add_to_cart)
+    if request.method == "POST":
+        name = request.form.to_dict()
+        return find_product_by_name(name)
+        # if find_product.product_amount < 1:
+        #     flash("This product is unavailable at the moment!", "info")
+        #     return redirect(url_for("users.products"))
+        # else:
+        #     user = current_user
+        #     user.user_products.append(find_product)
+        #     db.session.commit()
+        #     flash(f"{product_name} was successfully added to your cart!", "success")
+        #     return redirect(url_for("users.products"))
+    return render_template("products.html", products=products)
+
+
+def find_product_by_name(name):
+    find_product = Product.query.filter_by(product_name=name["name"]).first()
+    product_name = name["name"]
+    if find_product.product_amount < 1:
+        flash("This product is unavailable ath the moment!", "info")
+    else:
+        user = current_user
+        user.user_products.append(find_product)
+        db.session.commit()
+        flash(f"{product_name} was successfully added to your cart!", "success")
+        return redirect(url_for("users.products"))
+    return render_template("products.html")
 
 
 @users.route("/products/phones", methods=["GET", "POST"])
 def phones():
     find_phones = Product.query.filter_by(category="Phones").all()
+    if request.method == "POST":
+        print("before name")
+        name = request.form.to_dict()
+        print(name)
+        return find_product_by_name(name)
     return render_template("phones.html", find_phones=find_phones)
 
 
 @users.route("/products/laptops", methods=["GET", "POST"])
 def laptops():
     find_laptops = Product.query.filter_by(category="Laptops").all()
+    if request.method == "POST":
+        name = request.form.to_dict()
+        return find_product_by_name(name)
     return render_template("laptops.html", find_laptops=find_laptops)
 
 
-@users.route("/cart", methods=["GET", "POST"])
+@users.route("/cart", methods=["POST"])
 def cart():
     return render_template("cart.html")
