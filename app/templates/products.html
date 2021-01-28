@@ -25,7 +25,7 @@
                     {% if product.product_amount > 0 %}
                     <div class="mt-1 mb-1 spec-1"><span>{{ product.product_amount }} available now</span></div>
                     {% else %}
-                    <div class="mt-1 mb-1 spec-1" style="color: red;"><span>No available</span></div>
+                    <div class="mt-1 mb-1 spec-1" style="color: red;"><span>Not available</span></div>
                     {% endif %}
                     <div class="d-flex flex-column mt-4"><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter{{product.id}}">Details</button>
                         <div class="modal fade" id="exampleModalCenter{{product.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
