@@ -7,7 +7,7 @@ from flask import (
     session,
 )
 from app import db, bcrypt
-from app.models import User, Product
+from app.models import User, Product, UserProd
 from flask_login import current_user, login_user, login_required, logout_user
 from app.users.forms import (
     SignUpForm,
@@ -76,9 +76,9 @@ def logout():
     return redirect(url_for("users.index"))
 
 
-@users.route("/account", methods=["GET", "POST"])
+@users.route("/account/<string:username>", methods=["GET", "POST"])
 @login_required
-def account():
+def account(username):
     form = ChangePassword()
     change_name = ChangeName()
     del_account = DeleteAccount()
@@ -153,11 +153,12 @@ def find_product_by_name(name):
     find_product = Product.query.filter_by(product_name=name["name"]).first()
     product_name = name["name"]
     if find_product.product_amount < 1:
-        flash("This product is unavailable ath the moment!", "info")
+        flash("This product is unavailable at the moment!", "info")
         return redirect(url_for("users.products"))
     else:
         user = current_user
         user.user_products.append(find_product)
+        # if user.query.filter
         user.prod_amount += 1
         find_product.product_amount -= 1
         db.session.commit()
@@ -170,9 +171,7 @@ def find_product_by_name(name):
 def phones():
     find_phones = Product.query.filter_by(category="Phones").all()
     if request.method == "POST":
-        print("before name")
         name = request.form.to_dict()
-        print(name)
         return find_product_by_name(name)
     return render_template("phones.html", find_phones=find_phones)
 
@@ -188,4 +187,5 @@ def laptops():
 
 @users.route("/cart", methods=["POST", "GET"])
 def cart():
-    return render_template("cart.html")
+    total_price = sum([x.price for x in current_user.user_products])
+    return render_template("cart.html", total_price=total_price)
