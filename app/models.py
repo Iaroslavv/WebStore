@@ -10,16 +10,19 @@ def load_user(user_id):
 
 
 # a m2m table to connect relation between user and chosen products
-
-
 class UserProd(db.Model):
     __tablename__ = "user_prod"
+    __table_args__ = (db.UniqueConstraint("user_id", "product_id"),)
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey("user.id"))
     product_id = db.Column(db.Integer, db.ForeignKey("product.id"))
+    count = db.Column(db.Integer, default=0)
     
     user = db.relationship("User", backref="products")
     product = db.relationship("Product", backref="products")
+    
+    def show(self):
+        return self.count
 
 
 class User(db.Model, UserMixin):
@@ -28,9 +31,10 @@ class User(db.Model, UserMixin):
     email = db.Column(db.String(100), unique=True, nullable=False)
     name = db.Column(db.String(50), unique=True, nullable=False)
     password = db.Column(db.String(100), nullable=False)
+    count = db.Column(db.Integer, default=0)
     prod_amount = db.Column(db.Integer, default=0)
-    user_products = db.relationship("Product", secondary="user_prod",
-                                    backref=db.backref("products_user", lazy="dynamic"))
+    user_products = db.relationship("Product", secondary="user_prod", lazy='dynamic',
+                                    backref=db.backref("products_user"))
 
     def get_reset_token(self, expires_sec=1800):
         serial = Serializer(current_app.config["SECRET_KEY"], expires_sec)
@@ -46,7 +50,7 @@ class User(db.Model, UserMixin):
         return User.query.get(user_id)
     
     def __repr__(self):
-        return f"User('{self.name}', '{self.email}')"
+        return f"User('{self.name}', '{self.email}')"        
 
 
 class Product(db.Model):
