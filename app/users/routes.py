@@ -19,7 +19,7 @@ from app.users.forms import (
     DeleteAccount,
 )
 from app.users.utils import send_reset_email
-
+from sqlalchemy import exc
 
 users = Blueprint("users", __name__)
 
@@ -157,11 +157,20 @@ def find_product_by_name(name):
         return redirect(url_for("users.products"))
     else:
         user = current_user
-        user.user_products.append(find_product)
-        # if user.query.filter
-        user.prod_amount += 1
-        find_product.product_amount -= 1
-        db.session.commit()
+        prod = UserProd.query.filter_by(user=user, product=find_product).first()
+        if find_product not in user.user_products:
+            user.user_products.append(find_product)
+            prod = UserProd.query.filter_by(user=user, product=find_product).first()
+            prod.count = 1
+            user.prod_amount += 1
+            find_product.product_amount -= 1
+            db.session.commit()
+        else:
+            print(prod.count, "NOT NONE")
+            user.prod_amount += 1
+            find_product.product_amount -= 1
+            prod.count = prod.count + 1
+            db.session.commit()
         flash(f"{product_name} was successfully added to your cart!", "success")
         return redirect(url_for("users.products"))
     return render_template("products.html")
@@ -188,4 +197,6 @@ def laptops():
 @users.route("/cart", methods=["POST", "GET"])
 def cart():
     total_price = sum([x.price for x in current_user.user_products])
+    # new = current_user.query.filter_by(user_products="Iphone").first()
+    # print(new)
     return render_template("cart.html", total_price=total_price)

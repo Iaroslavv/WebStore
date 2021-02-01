@@ -53,7 +53,7 @@
                 <div class="tab-pane" id="account">
                   <h6>ACCOUNT SETTINGS</h6>
                   <hr>
-                  <form method="POST">
+                  <form method="POST" action="{{ url_for('users.account', username=current_user.name) }}">
                     {{ form.hidden_tag() }}
                     <div class="form-group">
                       {% if change_name.new_name.errors %}
