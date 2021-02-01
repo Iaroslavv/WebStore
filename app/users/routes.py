@@ -166,7 +166,6 @@ def find_product_by_name(name):
             find_product.product_amount -= 1
             db.session.commit()
         else:
-            print(prod.count, "NOT NONE")
             user.prod_amount += 1
             find_product.product_amount -= 1
             prod.count = prod.count + 1
@@ -195,8 +194,12 @@ def laptops():
 
 
 @users.route("/cart", methods=["POST", "GET"])
+@login_required
 def cart():
     total_price = sum([x.price for x in current_user.user_products])
-    # new = current_user.query.filter_by(user_products="Iphone").first()
-    # print(new)
-    return render_template("cart.html", total_price=total_price)
+    for prod in current_user.user_products:
+        product = UserProd.query.filter_by(user=current_user, product=prod).all()
+        print(product)
+        quantity = product.count
+        print(quantity)
+    return render_template("cart.html", total_price=total_price, quantity=quantity)
