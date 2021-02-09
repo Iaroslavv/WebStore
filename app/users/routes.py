@@ -4,7 +4,6 @@ from flask import (
     url_for, redirect,
     flash,
     request,
-    session,
 )
 from app import db, bcrypt
 from app.models import User, Product, UserProd
@@ -19,7 +18,7 @@ from app.users.forms import (
     DeleteAccount,
 )
 from app.users.utils import send_reset_email
-from sqlalchemy import exc
+
 
 users = Blueprint("users", __name__)
 
@@ -166,9 +165,9 @@ def find_product_by_name(name):
             find_product.product_amount -= 1
             db.session.commit()
         else:
-            user.prod_amount += 1
+            user.prod_amount += 1   # update total counter in user's products
             find_product.product_amount -= 1
-            prod.count = prod.count + 1
+            prod.count = prod.count + 1     # update counter in product
             db.session.commit()
         flash(f"{product_name} was successfully added to your cart!", "success")
         return redirect(url_for("users.products"))
@@ -187,6 +186,7 @@ def phones():
 @users.route("/products/laptops", methods=["GET", "POST"])
 def laptops():
     find_laptops = Product.query.filter_by(category="Laptops").all()
+    print(current_user.user_products)
     if request.method == "POST":
         name = request.form.to_dict()
         return find_product_by_name(name)
@@ -197,9 +197,5 @@ def laptops():
 @login_required
 def cart():
     total_price = sum([x.price for x in current_user.user_products])
-    for prod in current_user.user_products:
-        product = UserProd.query.filter_by(user=current_user, product=prod).all()
-        print(product)
-        quantity = product.count
-        print(quantity)
-    return render_template("cart.html", total_price=total_price, quantity=quantity)
+    prod = db.session.query(User, UserProd).outerjoin(UserProd, current_user.id == UserProd.user_id).all()
+    return render_template("cart.html", total_price=total_price)
