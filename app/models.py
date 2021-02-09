@@ -21,8 +21,8 @@ class UserProd(db.Model):
     user = db.relationship("User", backref="products")
     product = db.relationship("Product", backref="products")
     
-    def show(self):
-        return self.count
+    def __repr__(self):
+        return f"UserProd('{self.count}')" 
 
 
 class User(db.Model, UserMixin):
@@ -69,7 +69,7 @@ class Product(db.Model):
     category_id = db.Column(db.Integer, db.ForeignKey("category.id"))
     
     def __repr__(self):
-        return f"('{self.product_name}', '{self.summary}', '{self.description}', '{self.price}')"
+        return f"('{self.product_name}', '{self.summary}', '{self.description}', '{self.price}', '{self.product_amount}')"
 
 
 # one2many relationship between Category and Product
