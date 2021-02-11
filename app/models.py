@@ -22,7 +22,7 @@ class UserProd(db.Model):
     product = db.relationship("Product", backref="products")
     
     def __repr__(self):
-        return f"UserProd('{self.count}')" 
+        return f"{self.count}" 
 
 
 class User(db.Model, UserMixin):
