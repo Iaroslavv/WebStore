@@ -197,5 +197,6 @@ def laptops():
 @login_required
 def cart():
     total_price = sum([x.price for x in current_user.user_products])
-    prod = db.session.query(User, UserProd).outerjoin(UserProd, current_user.id == UserProd.user_id).all()
-    return render_template("cart.html", total_price=total_price)
+    user = current_user
+    product_list = UserProd.query.filter_by(user=user) # I removed .all() to be able to iterate over it
+    return render_template("cart.html", total_price=total_price, product_list=product_list)

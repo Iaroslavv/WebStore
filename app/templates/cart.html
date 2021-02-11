@@ -30,18 +30,19 @@
                 </tr>
               </thead>
               <tbody>
-                {% for product in current_user.user_products %}
+                {% for prod in product_list %}
                 <tr>
                   <th scope="row" class="border-0">
                     <div class="p-2">
-                      <img src="{{ product.picture }}" alt="product" width="70" class="img-fluid rounded shadow-sm">
+                      <img src="" alt="product" width="70" class="img-fluid rounded shadow-sm">
                       <div class="ml-3 d-inline-block align-middle">
-                        <h5 class="mb-0"> <a href="#" class="text-dark d-inline-block align-middle">{{product.product_name}}</a></h5><span class="text-muted font-weight-normal font-italic d-block">Category: {{product.category}} </span>
+                        <h5 class="mb-0"> <a href="#" class="text-dark d-inline-block align-middle">{{prod.product.product_name}}</a></h5><span class="text-muted font-weight-normal font-italic d-block">Category: {{prod.product.category}} </span>
                       </div>
                     </div>
                   </th>
-                  <td class="border-0 align-middle"><strong>$ {{product.price}} </strong></td>
-                  <td class="border-0 align-middle"><strong></strong>1</td>
+                  <td class="border-0 align-middle"><strong>$ {{prod.product.price}} </strong></td>
+
+                  <td class="border-0 align-middle"><strong></strong>{{prod}}</td>
                   <td class="border-0 align-middle"><button type="button" class="btn btn-danger" data-toggle="modal" data-target="#exampleModalCenter">
                     Remove
                   </button></td>
