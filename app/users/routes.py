@@ -18,6 +18,7 @@ from app.users.forms import (
     DeleteAccount,
 )
 from app.users.utils import send_reset_email
+from app.users.helper_methods import find_product_by_name
 
 
 users = Blueprint("users", __name__)
@@ -81,6 +82,7 @@ def account(username):
     form = ChangePassword()
     change_name = ChangeName()
     del_account = DeleteAccount()
+    product_list = UserProd.query.filter_by(user=current_user)
     if form.validate_on_submit() and form.submit1.data:
         user = current_user
         user.password = bcrypt.generate_password_hash(form.new_password.data).decode("utf-8")
@@ -105,7 +107,8 @@ def account(username):
         flash("Your account has been deleted. Hope to see you again!", "success")
         return redirect(url_for("users.signup"))
     return render_template("account.html", form=form,
-                           change_name=change_name, del_account=del_account)
+                           change_name=change_name, del_account=del_account,
+                           product_list=product_list)
 
 
 @users.route("/reset_password", methods=["GET", "POST"])
@@ -148,32 +151,6 @@ def products():
     return render_template("products.html", products=products)
 
 
-def find_product_by_name(name):
-    find_product = Product.query.filter_by(product_name=name["name"]).first()
-    product_name = name["name"]
-    if find_product.product_amount < 1:
-        flash("This product is unavailable at the moment!", "info")
-        return redirect(url_for("users.products"))
-    else:
-        user = current_user
-        prod = UserProd.query.filter_by(user=user, product=find_product).first()
-        if find_product not in user.user_products:
-            user.user_products.append(find_product)
-            prod = UserProd.query.filter_by(user=user, product=find_product).first()
-            prod.count = 1
-            user.prod_amount += 1
-            find_product.product_amount -= 1
-            db.session.commit()
-        else:
-            user.prod_amount += 1   # update total counter in user's products
-            find_product.product_amount -= 1
-            prod.count = prod.count + 1     # update counter in product
-            db.session.commit()
-        flash(f"{product_name} was successfully added to your cart!", "success")
-        return redirect(url_for("users.products"))
-    return render_template("products.html")
-
-
 @users.route("/products/phones", methods=["GET", "POST"])
 def phones():
     find_phones = Product.query.filter_by(category="Phones").all()
@@ -196,7 +173,10 @@ def laptops():
 @users.route("/cart", methods=["POST", "GET"])
 @login_required
 def cart():
-    total_price = sum([x.price for x in current_user.user_products])
     user = current_user
-    product_list = UserProd.query.filter_by(user=user) # I removed .all() to be able to iterate over it
-    return render_template("cart.html", total_price=total_price, product_list=product_list)
+    prices = [x.price for x in current_user.user_products]
+    products_to_calculate = [x.count for x in current_user.products]
+    product_list = UserProd.query.filter_by(user=user)  # I removed .all() to be able to iterate over it
+    total_price = sum([int(first)*int(second) for first, second in zip(prices, products_to_calculate)])
+    return render_template("cart.html", product_list=product_list,
+                           total_price=total_price)
