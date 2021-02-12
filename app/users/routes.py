@@ -196,7 +196,9 @@ def laptops():
 @users.route("/cart", methods=["POST", "GET"])
 @login_required
 def cart():
-    total_price = sum([x.price for x in current_user.user_products])
     user = current_user
+    prices = [x.price for x in current_user.user_products]
+    products_to_calculate = [x.count for x in current_user.products]
     product_list = UserProd.query.filter_by(user=user) # I removed .all() to be able to iterate over it
-    return render_template("cart.html", total_price=total_price, product_list=product_list)
+    total_price = sum([int(first)*int(second) for first, second in zip(prices, products_to_calculate)])
+    return render_template("cart.html", product_list=product_list, total_price=total_price)
