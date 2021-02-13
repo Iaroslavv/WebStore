@@ -178,5 +178,23 @@ def cart():
     products_to_calculate = [x.count for x in current_user.products]
     product_list = UserProd.query.filter_by(user=user)  # I removed .all() to be able to iterate over it
     total_price = sum([int(first)*int(second) for first, second in zip(prices, products_to_calculate)])
+    if request.method == "POST":
+        if request.form["prod_id"]:
+            prod_id = request.form.to_dict()
+            return del_items(prod_id)
+        return redirect(url_for("users.cart"))
     return render_template("cart.html", product_list=product_list,
                            total_price=total_price)
+
+def del_items(prod_id):
+    find_product = Product.query.filter_by(id=prod_id["prod_id"]).first()
+    user = User.query.filter_by(id=current_user.id).first()
+    prod = UserProd.query.filter_by(user=current_user, product=find_product).first()
+    find_product.product_amount += prod.count
+    user.prod_amount -= prod.count
+
+    user.user_products.remove(find_product)
+    db.session.commit()
+    return render_template("cart.html")
+    
+    
