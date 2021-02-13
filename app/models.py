@@ -31,10 +31,10 @@ class User(db.Model, UserMixin):
     email = db.Column(db.String(100), unique=True, nullable=False)
     name = db.Column(db.String(50), unique=True, nullable=False)
     password = db.Column(db.String(100), nullable=False)
-    count = db.Column(db.Integer, default=0)
     prod_amount = db.Column(db.Integer, default=0)
-    user_products = db.relationship("Product", secondary="user_prod", lazy='dynamic',
-                                    backref=db.backref("products_user"))
+    user_products = db.relationship("Product", secondary="user_prod",
+                                    lazy='dynamic', cascade="all, delete",
+                                    backref="products_user")
 
     def get_reset_token(self, expires_sec=1800):
         serial = Serializer(current_app.config["SECRET_KEY"], expires_sec)
