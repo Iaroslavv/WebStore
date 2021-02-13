@@ -18,7 +18,7 @@ from app.users.forms import (
     DeleteAccount,
 )
 from app.users.utils import send_reset_email
-from app.users.helper_methods import find_product_by_name
+from app.users.helper_methods import find_product_by_name, del_items
 
 
 users = Blueprint("users", __name__)
@@ -106,6 +106,11 @@ def account(username):
         db.session.commit()
         flash("Your account has been deleted. Hope to see you again!", "success")
         return redirect(url_for("users.signup"))
+    if request.method == "POST":
+        if request.form["prod_id"]:
+            prod_id = request.form.to_dict()
+            return del_items(prod_id)
+        return redirect(url_for("users.account"))
     return render_template("account.html", form=form,
                            change_name=change_name, del_account=del_account,
                            product_list=product_list)
@@ -144,6 +149,7 @@ def reset_token(token):
 
 @users.route("/products", methods=["GET", "POST"])
 def products():
+    """Display all items."""
     products = Product.query.all()
     if request.method == "POST":
         name = request.form.to_dict()
@@ -153,6 +159,7 @@ def products():
 
 @users.route("/products/phones", methods=["GET", "POST"])
 def phones():
+    """Display phones."""
     find_phones = Product.query.filter_by(category="Phones").all()
     if request.method == "POST":
         name = request.form.to_dict()
@@ -162,8 +169,8 @@ def phones():
 
 @users.route("/products/laptops", methods=["GET", "POST"])
 def laptops():
+    """Display laptops."""
     find_laptops = Product.query.filter_by(category="Laptops").all()
-    print(current_user.user_products)
     if request.method == "POST":
         name = request.form.to_dict()
         return find_product_by_name(name)
@@ -173,10 +180,16 @@ def laptops():
 @users.route("/cart", methods=["POST", "GET"])
 @login_required
 def cart():
+    """Display items in the cart."""
     user = current_user
     prices = [x.price for x in current_user.user_products]
     products_to_calculate = [x.count for x in current_user.products]
     product_list = UserProd.query.filter_by(user=user)  # I removed .all() to be able to iterate over it
     total_price = sum([int(first)*int(second) for first, second in zip(prices, products_to_calculate)])
+    if request.method == "POST":
+        if request.form["prod_id"]:
+            prod_id = request.form.to_dict()
+            return del_items(prod_id)
+        return redirect(url_for("users.cart"))
     return render_template("cart.html", product_list=product_list,
                            total_price=total_price)

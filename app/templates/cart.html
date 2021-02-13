@@ -43,9 +43,12 @@
                   <td class="border-0 align-middle"><strong>$ {{prod.product.price}} </strong></td>
 
                   <td class="border-0 align-middle"><strong></strong>{{prod}}</td>
-                  <td class="border-0 align-middle"><button type="button" class="btn btn-danger" data-toggle="modal" data-target="#exampleModalCenter">
-                    Remove
-                  </button></td>
+                  
+                  <td class="border-0 align-middle">
+                  <form method="POST">
+                  <button class="btn btn-danger" name="prod_id" value="{{prod.product.id}}">Remove</button>
+                  </form>
+                </td>
                 </tr>
                 {% endfor %}
               </tbody>
