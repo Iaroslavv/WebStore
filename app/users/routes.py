@@ -18,7 +18,7 @@ from app.users.forms import (
     DeleteAccount,
 )
 from app.users.utils import send_reset_email
-from app.users.helper_methods import find_product_by_name, del_items
+from app.users.helper_methods import find_product_by_name, del_items, del_user_acc
 
 
 users = Blueprint("users", __name__)
@@ -102,10 +102,7 @@ def account(username):
         return redirect(url_for("users.account"))
     if del_account.validate() and del_account.submit3.data:
         user = current_user
-        db.session.delete(user)
-        db.session.commit()
-        flash("Your account has been deleted. Hope to see you again!", "success")
-        return redirect(url_for("users.signup"))
+        return del_user_acc(user)
     if request.method == "POST":
         if request.form["prod_id"]:
             prod_id = request.form.to_dict()
