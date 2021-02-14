@@ -15,7 +15,7 @@ class UserProd(db.Model):
     __table_args__ = (db.UniqueConstraint("user_id", "product_id"),)
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey("user.id", ondelete="CASCADE"))
-    product_id = db.Column(db.Integer, db.ForeignKey("product.id"))
+    product_id = db.Column(db.Integer, db.ForeignKey("product.id", ondelete="CASCADE"))
     count = db.Column(db.Integer, default=0)
     
     user = db.relationship("User", backref="products")
@@ -33,13 +33,14 @@ class User(db.Model, UserMixin):
     password = db.Column(db.String(100), nullable=False)
     prod_amount = db.Column(db.Integer, default=0)
     user_products = db.relationship("Product", secondary="user_prod",
-                                    lazy='dynamic', cascade="all, delete", passive_deletes=True,
-                                    backref="products_user")
+                                    lazy='dynamic', cascade="all, delete",
+                                    passive_deletes=True, backref="products_user"
+                                    )
 
     def get_reset_token(self, expires_sec=1800):
         serial = Serializer(current_app.config["SECRET_KEY"], expires_sec)
         return serial.dumps({"user_id": self.id}).decode("utf-8")
-   
+ 
     @staticmethod
     def verify_reset_token(token) -> str:
         serial = Serializer(current_app.config["SECRET_KEY"])
@@ -49,9 +50,8 @@ class User(db.Model, UserMixin):
             return None
         return User.query.get(user_id)
 
-    
     def __repr__(self):
-        return f"User('{self.name}', '{self.email}')"        
+        return f"User('{self.name}', '{self.email}')"      
 
 
 class Product(db.Model):
@@ -66,7 +66,9 @@ class Product(db.Model):
     price = db.Column(db.Float, default=0)
     category = db.Column(db.String(30), nullable=False)
     
-    users = db.relationship("User", secondary="user_prod")
+    users = db.relationship("User", secondary="user_prod",
+                            cascade="all, delete", passive_deletes=True
+                            )
     category_id = db.Column(db.Integer, db.ForeignKey("category.id"))
     
     def __repr__(self):
