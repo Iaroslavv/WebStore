@@ -14,7 +14,7 @@ class UserProd(db.Model):
     __tablename__ = "user_prod"
     __table_args__ = (db.UniqueConstraint("user_id", "product_id"),)
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey("user.id"))
+    user_id = db.Column(db.Integer, db.ForeignKey("user.id", ondelete="CASCADE"))
     product_id = db.Column(db.Integer, db.ForeignKey("product.id"))
     count = db.Column(db.Integer, default=0)
     
@@ -33,7 +33,7 @@ class User(db.Model, UserMixin):
     password = db.Column(db.String(100), nullable=False)
     prod_amount = db.Column(db.Integer, default=0)
     user_products = db.relationship("Product", secondary="user_prod",
-                                    lazy='dynamic', cascade="all, delete",
+                                    lazy='dynamic', cascade="all, delete", passive_deletes=True,
                                     backref="products_user")
 
     def get_reset_token(self, expires_sec=1800):

@@ -102,10 +102,7 @@ def account(username):
         return redirect(url_for("users.account"))
     if del_account.validate() and del_account.submit3.data:
         user = current_user
-        db.session.delete(user)
-        db.session.commit()
-        flash("Your account has been deleted. Hope to see you again!", "success")
-        return redirect(url_for("users.signup"))
+        return del_user_acc(user)
     if request.method == "POST":
         if request.form["prod_id"]:
             prod_id = request.form.to_dict()
@@ -115,6 +112,28 @@ def account(username):
                            change_name=change_name, del_account=del_account,
                            product_list=product_list)
 
+
+def del_user_acc(user):
+    prod = user.user_products.all()
+    print("prod", prod)
+    for p in prod:
+        prod_id = p.id  # get id of a product
+        find_product = Product.query.filter_by(id=prod_id).first()  # get product by id
+        print("find product", find_product)
+        product = UserProd.query.filter_by(user=user, product=find_product)  # filter UserProd to get count
+        print("product", product)
+        new = UserProd.query.filter_by(user=user, product=find_product).first()
+        print("new", new)
+        find_product.product_amount += new.count
+        print("AFTER NEW")
+        user.prod_amount -= new.count
+        print("AFTER USER>PROD AMOUNT")
+
+    print("BEFORE SESSION DELETE")
+    db.session.delete(user)
+    db.session.commit()
+    flash("Your account has been deleted. Hope to see you again!", "success")
+    return redirect(url_for("users.cart"))
 
 @users.route("/reset_password", methods=["GET", "POST"])
 def reset_request():
