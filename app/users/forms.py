@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, SubmitField
+from wtforms import StringField, PasswordField, BooleanField, SubmitField, TextAreaField
 from wtforms.fields.html5 import EmailField
 from wtforms.validators import DataRequired, Length, EqualTo, ValidationError
 from app.models import User
@@ -69,5 +69,17 @@ class ChangeName(FlaskForm):
         if name:
             raise ValidationError("The user with this name already exists!")
 
+
 class DeleteAccount(FlaskForm):
     submit3 = SubmitField("Yes, delete my account")
+
+
+class ContactForm(FlaskForm):
+    name = StringField("Name *", validators=[DataRequired()])
+    email = EmailField("Email *", validators=[DataRequired()])
+    message = TextAreaField("Message *", validators=[DataRequired(),
+                                           Length(min=20, max=300,
+                                                  message="Message must be minimum 20 characters long.")]
+                          )
+    subject = StringField("Subject *", validators=[DataRequired()])
+    submit = SubmitField("Send")
