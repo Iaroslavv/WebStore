@@ -182,7 +182,8 @@ def contact():
     form = ContactForm()
     if form.validate_on_submit():
         email = f"Email from the user: {form.email.data}"
-        body = email + ". " + form.message.data
+        subject = f"Subject: {form.subject.data}"
+        body = email + ". " + subject + ". " + form.message.data
         msg = Message(
             "Message from the website client.",
             sender=current_app.config["MAIL_USERNAME"],
