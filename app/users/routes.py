@@ -4,8 +4,9 @@ from flask import (
     url_for, redirect,
     flash,
     request,
+    current_app,
 )
-from app import db, bcrypt
+from app import db, bcrypt, mail
 from app.models import User, Product, UserProd
 from flask_login import current_user, login_user, login_required, logout_user
 from app.users.forms import (
@@ -16,9 +17,11 @@ from app.users.forms import (
     ChangePassword,
     ChangeName,
     DeleteAccount,
+    ContactForm,
 )
 from app.users.utils import send_reset_email
 from app.users.helper_methods import find_product_by_name, del_items, del_user_acc
+from flask_mail import Message
 
 
 users = Blueprint("users", __name__)
@@ -172,6 +175,24 @@ def laptops():
         name = request.form.to_dict()
         return find_product_by_name(name)
     return render_template("laptops.html", find_laptops=find_laptops)
+
+
+@users.route("/contact", methods=["GET", "POST"])
+def contact():
+    form = ContactForm()
+    if form.validate_on_submit():
+        email = f"Email from the user: {form.email.data}"
+        body = email + ". " + form.message.data
+        msg = Message(
+            "Message from the website client.",
+            sender=current_app.config["MAIL_USERNAME"],
+            recipients=[current_app.config["MAIL_GET"]],
+            body=body,
+        )
+        mail.send(msg)
+        flash("Your message has been sent!", "success")
+        return redirect(url_for("users.contact"))
+    return render_template("contact.html", form=form)
 
 
 @users.route("/cart", methods=["POST", "GET"])
