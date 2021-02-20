@@ -9,10 +9,12 @@
             <div class="row p-2 bg-white border rounded">
                 <div class="col-md-3 mt-1"><img class="img-fluid img-responsive rounded product-image" src="static/pics/{{ product.picture }}"></div>
                 <div class="col-md-6 mt-1">
-                    <h5>{{ product.product_name }}</h5>
+                  <div class="ml-3 d-inline-block align-middle">
+                    <h5 class="mb-0"> <a href="{{ url_for('users.product_info', id_product=product.id) }}" class="text-dark d-inline-block align-middle">{{ product.product_name }}</a></h5>
+                  </div>
                 
                     <div class="d-flex flex-row">
-                        <div class="ratings mr-2"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i></div><span>Reviews count</span>
+                        <div class="ratings mr-2"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i></div><span>{{product.comments}}</span>
                     </div>
                     <div class="mt-1 mb-1 spec-1"><span>{{ product.summary }}</span></div>
                     <p class="text-justify text-truncate para mb-0">{{ product.description }}<br><br></p>
