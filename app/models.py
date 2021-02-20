@@ -2,6 +2,7 @@ from app import db, login_manager
 from flask_login import UserMixin
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from flask import current_app
+from datetime import datetime
 
 
 @login_manager.user_loader
@@ -36,6 +37,7 @@ class User(db.Model, UserMixin):
                                     lazy='dynamic', cascade="all, delete",
                                     passive_deletes=True, backref="products_user"
                                     )
+    comments = db.relationship("Comments", backref="author", lazy=True)
 
     def get_reset_token(self, expires_sec=1800):
         serial = Serializer(current_app.config["SECRET_KEY"], expires_sec)
@@ -70,9 +72,21 @@ class Product(db.Model):
                             cascade="all, delete", passive_deletes=True
                             )
     category_id = db.Column(db.Integer, db.ForeignKey("category.id"))
+    comments = db.relationship("Comments", backref="com_product", lazy=True)
     
     def __repr__(self):
         return f"('{self.product_name}', '{self.summary}', '{self.description}', '{self.price}', '{self.product_amount}')"
+
+
+class Comments(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    date_posted = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    content = db.Column(db.String(), nullable=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    product_id = db.Column(db.Integer, db.ForeignKey("product.id"))
+    
+    def __repr__(self):
+        return f"Comment('{self.content}','{self.date_posted}')"
 
 
 # one2many relationship between Category and Product

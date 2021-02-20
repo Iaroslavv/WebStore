@@ -1,0 +1,107 @@
+{% include "layout.html" %}
+{% block content %}
+<section class="mb-5">
+
+    <div class="row">
+      <div class="col-md-6 mb-4 mb-md-0">
+  
+        <div id="mdb-lightbox-ui"></div>
+  
+        <div class="mdb-lightbox">
+  
+          <div class="row product-gallery mx-1">
+  
+            <div class="col-12 mb-0">
+              <figure class="view overlay rounded z-depth-1 main-img">
+                  <img src="static/pics/{{ find_product.picture }}"
+                    class="img-fluid z-depth-1">
+                </a>
+              </figure>
+            </div>
+          </div>
+  
+        </div>
+  
+      </div>
+      <div class="col-md-6">
+  
+        <h5>{{find_product.product_name}}</h5>
+        <p class="mb-2 text-muted text-uppercase small">{{find_product.category}}</p>
+        <p><span class="mr-1"><strong>${{find_product.price}}</strong></span></p>
+        <p class="pt-1">{{find_product.description}}</p>
+        <div class="table-responsive">
+          <table class="table table-sm table-borderless mb-0">
+            <tbody>
+              <tr>
+                <th class="pl-0 w-25" scope="row"><strong>Summary</strong></th>
+                <td>{{find_product.summary}}</td>
+              </tr>
+              <tr>
+                <th class="pl-0 w-25" scope="row"><strong>Quantity</strong></th>
+                <td>{{find_product.product_amount}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <hr>
+        <button type="button" class="btn btn-primary btn-md mr-1 mb-2" data-toggle="modal" data-target="#exampleModalCenter">
+            Leave Feedback
+          </button>
+          
+          <!-- Modal -->
+          <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLongTitle">Your message</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                    <form role="form" id="feedbackForm" method="POST">
+                        {{ form.hidden_tag() }}
+                        <div class="form-group">
+                            <div class="form-group">
+                                    {% if form.content.errors %}
+                                    {{ form.content(class="form-control form-control is-invalid") }}
+                                    <div class="invalid-feedback">
+                                        {% for error in form.content.errors %}
+                                            <span>{{ error }}</span>
+                                        {% endfor %}
+                                    </div>
+                                {% else %}
+                                    {{ form.content(class="form-control form-control", placeholder="Leave your feedback here..") }}
+                                {% endif %}
+                            </div>
+                        </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                  {{ form.submit(class="btn btn-primary" ) }}
+                </div>
+              </div>
+            </div>
+          </div>
+        <button type="button" class="btn btn-outline-success btn-md mr-1 mb-2"><i
+            class="fas fa-shopping-cart pr-2"></i>Add to cart</button>
+      </div>
+    </div>
+    {% if not find_product.comments  %}
+    <div class="container" id="products">
+        <div class="d-flex justify-content-center row">
+            <h5>No comments yet. Be the first!</h5>
+        </div>
+    </div>
+    {% else %}
+    <div class="container" id="products">
+        <div class="d-flex justify-content-center row">
+            <h5>Comments</h5>
+        </div>
+    </div>
+    {% endif %}
+  </section>
+
+
+
+{% endblock content %}

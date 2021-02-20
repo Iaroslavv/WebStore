@@ -7,7 +7,7 @@ from flask import (
     current_app,
 )
 from app import db, bcrypt, mail
-from app.models import User, Product, UserProd
+from app.models import User, Product, UserProd, Comments
 from flask_login import current_user, login_user, login_required, logout_user
 from app.users.forms import (
     SignUpForm,
@@ -18,6 +18,7 @@ from app.users.forms import (
     ChangeName,
     DeleteAccount,
     ContactForm,
+    CommentForm,
 )
 from app.users.utils import send_reset_email
 from app.users.helper_methods import find_product_by_name, del_items, del_user_acc
@@ -212,3 +213,21 @@ def cart():
         return redirect(url_for("users.cart"))
     return render_template("cart.html", product_list=product_list,
                            total_price=total_price)
+
+
+@users.route("/product<int:id_product>", methods=["POST", "GET"])
+def product_info(id_product):
+    find_product = Product.query.get_or_404(id_product)
+    form = CommentForm()
+    comments = Comments.query.filter_by(com_product=find_product).order_by(Comments.date_posted.desc())
+    user = current_user
+    if form.validate_on_submit():
+        new_comment = Comments(content=form.content.data, author=user, com_product=find_product)
+        print(new_comment)
+        db.session.add(new_comment)
+        print("after add")
+        db.session.commit()
+        flash("Your feedback has been posted!", "success")
+        return redirect(url_for("users.product_info", id_product=find_product.id))
+    return render_template("product_info.html", find_product=find_product, form=form)
+    
