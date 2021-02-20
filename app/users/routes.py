@@ -18,6 +18,7 @@ from app.users.forms import (
     ChangeName,
     DeleteAccount,
     ContactForm,
+    CommentForm,
 )
 from app.users.utils import send_reset_email
 from app.users.helper_methods import find_product_by_name, del_items, del_user_acc
@@ -212,3 +213,11 @@ def cart():
         return redirect(url_for("users.cart"))
     return render_template("cart.html", product_list=product_list,
                            total_price=total_price)
+
+
+@users.route("/product<int:id_product>", methods=["POST", "GET"])
+def product_info(id_product):
+    find_product = Product.query.filter_by(id=id_product).first()
+    form = CommentForm()
+    return render_template("product_info.html", find_product=find_product, form=form)
+    
