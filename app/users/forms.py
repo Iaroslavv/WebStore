@@ -83,3 +83,9 @@ class ContactForm(FlaskForm):
                           )
     subject = StringField("Subject *", validators=[DataRequired()])
     submit = SubmitField("Send")
+
+
+class CommentForm(FlaskForm):
+    content = TextAreaField("Leave your feedback here..", validators=[DataRequired()])
+    submit = SubmitField("Post")
+    
