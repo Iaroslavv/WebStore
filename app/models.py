@@ -81,7 +81,7 @@ class Product(db.Model):
 class Comments(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     date_posted = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
-    content = db.Column(db.Text(), nullable=True)
+    content = db.Column(db.String(), nullable=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     product_id = db.Column(db.Integer, db.ForeignKey("product.id"))
     
