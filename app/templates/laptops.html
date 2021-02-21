@@ -7,7 +7,7 @@
             <div class="row p-2 bg-white border rounded">
                 <div class="col-md-3 mt-1"><img class="img-fluid img-responsive rounded product-image" src="{{ laptop.picture }}" alt="ipad"></div>
                 <div class="col-md-6 mt-1">
-                    <h5>{{ laptop.product_name }}</h5>
+                  <h5 class="mb-0"> <a href="{{ url_for('users.product_info', id_product=laptop.id) }}" class="text-dark d-inline-block align-middle">{{ laptop.product_name }}</a></h5>
                 
                     <div class="d-flex flex-row">
                         <div class="ratings mr-2"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i></div><span>Reviews count</span>
