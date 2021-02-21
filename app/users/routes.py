@@ -219,15 +219,13 @@ def cart():
 def product_info(id_product):
     find_product = Product.query.get_or_404(id_product)
     form = CommentForm()
-    comments = Comments.query.filter_by(com_product=find_product).order_by(Comments.date_posted.desc())
+    comments = Comments.query.filter_by(com_product=find_product).order_by(Comments.date_posted.desc()).all()
     user = current_user
     if form.validate_on_submit():
         new_comment = Comments(content=form.content.data, author=user, com_product=find_product)
-        print(new_comment)
         db.session.add(new_comment)
-        print("after add")
         db.session.commit()
         flash("Your feedback has been posted!", "success")
         return redirect(url_for("users.product_info", id_product=find_product.id))
-    return render_template("product_info.html", find_product=find_product, form=form)
+    return render_template("product_info.html", find_product=find_product, form=form, comments=comments)
     
