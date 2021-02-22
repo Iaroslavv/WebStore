@@ -51,6 +51,7 @@
           <!-- Modal -->
           <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
+              
               <div class="modal-content">
                 <div class="modal-header">
                   <h5 class="modal-title" id="exampleModalLongTitle">Your message</h5>
@@ -58,9 +59,10 @@
                     <span aria-hidden="true">&times;</span>
                   </button>
                 </div>
+                <form role="form" id="feedbackForm" method="POST">
+                  {{ form.hidden_tag() }}
                 <div class="modal-body">
-                    <form role="form" id="feedbackForm" method="POST">
-                        {{ form.hidden_tag() }}
+                    
                         <div class="form-group">
                             <div class="form-group">
                                     {% if form.content.errors %}
@@ -75,14 +77,16 @@
                                 {% endif %}
                             </div>
                         </div>
-                      </form>
+                      
                 </div>
                 <div class="modal-footer">
                   <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                   {{ form.submit5(class="btn btn-primary" ) }}
                 </div>
+                </form>
               
               </div>
+
             </div>
           </div>
         <button type="button" class="btn btn-outline-success btn-md mr-1 mb-2"><i
@@ -129,8 +133,9 @@
                                             <span aria-hidden="true">&times;</span>
                                           </button>
                                         </div>
+                                        <form role="form" id="feedbackForm" method="POST">
+                                          {{ form.hidden_tag() }}
                                         <div class="modal-body">
-                                            <form role="form" id="feedbackForm" method="POST">
                                                 {{ edit_form.hidden_tag() }}
                                                 <div class="form-group">
                                                     <div class="form-group">
@@ -146,14 +151,13 @@
                                                         {% endif %}
                                                     </div>
                                                 </div>
-                                              </form>
+                                              
                                         </div>
-                                        <div class="modal-footer">
-                                          <form role="form" id="feedbackForm" method="POST">
+                                        <div class="modal-footer">     
                                           <button type="button" class="btn btn-secondary btn-md mr-1 mb-2" data-dismiss="modal">Close</button>
                                           {{ edit_form.submit6(class="btn btn-info btn-md mr-1 mb-2") }}
-                                          </form>
                                         </div>
+                                        </form>
                                       </div>
                                     </div>
                                   </div>
