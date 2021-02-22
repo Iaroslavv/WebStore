@@ -75,11 +75,13 @@
                                 {% endif %}
                             </div>
                         </div>
+                      </form>
                 </div>
                 <div class="modal-footer">
                   <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                  {{ form.submit(class="btn btn-primary" ) }}
+                  {{ form.submit5(class="btn btn-primary" ) }}
                 </div>
+              
               </div>
             </div>
           </div>
@@ -112,8 +114,56 @@
    
                           <div class="bg-white">
                               <div class="d-flex flex-row fs-12">
+                                  {% if comment.author == current_user %}
+                                  <button type="button" class="btn btn-info btn-md mr-1 mb-2" data-toggle="modal" data-target="#modaledit{{comment.id}}">
+                                    Edit Comment
+                                  </button>
+                                  
+                                  <!-- Modal -->
+                                  <div class="modal fade" id="modaledit{{comment.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                      <div class="modal-content">
+                                        <div class="modal-header">
+                                          <h5 class="modal-title" id="exampleModalLongTitle">Your message</h5>
+                                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                          </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form role="form" id="feedbackForm" method="POST">
+                                                {{ edit_form.hidden_tag() }}
+                                                <div class="form-group">
+                                                    <div class="form-group">
+                                                            {% if edit_form.edit_content.errors %}
+                                                            {{ edit_form.edit_content(class="form-control form-control is-invalid") }}
+                                                            <div class="invalid-feedback">
+                                                                {% for error in edit_form.edit_content.errors %}
+                                                                    <span>{{ error }}</span>
+                                                                {% endfor %}
+                                                            </div>
+                                                        {% else %}
+                                                            {{ edit_form.edit_content(class="form-control form-control", placeholder="Edit your comment") }}
+                                                        {% endif %}
+                                                    </div>
+                                                </div>
+                                              </form>
+                                        </div>
+                                        <div class="modal-footer">
+                                          <form role="form" id="feedbackForm" method="POST">
+                                          <button type="button" class="btn btn-secondary btn-md mr-1 mb-2" data-dismiss="modal">Close</button>
+                                          {{ edit_form.submit6(class="btn btn-info btn-md mr-1 mb-2") }}
+                                          </form>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  
+                                  
+                                  <button class="btn btn-danger btn-md mr-1 mb-2" name="del_comment" value="{{ comment.id }}">Delete</button>
+                                      {% else %}
                                   <div class="like p-2 cursor"><i class="fa fa-thumbs-o-up"></i><span class="ml-1">Like</span></div>
                                   <div class="like p-2 cursor"><i class="fa fa-commenting-o"></i><span class="ml-1">Comment</span></div>
+                                  {% endif %}
                               </div>
                           </div>
 
