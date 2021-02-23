@@ -51,6 +51,7 @@
           <!-- Modal -->
           <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
+              
               <div class="modal-content">
                 <div class="modal-header">
                   <h5 class="modal-title" id="exampleModalLongTitle">Your message</h5>
@@ -58,9 +59,10 @@
                     <span aria-hidden="true">&times;</span>
                   </button>
                 </div>
+                <form role="form" id="feedbackForm" method="POST">
+                  {{ form.hidden_tag() }}
                 <div class="modal-body">
-                    <form role="form" id="feedbackForm" method="POST">
-                        {{ form.hidden_tag() }}
+                    
                         <div class="form-group">
                             <div class="form-group">
                                     {% if form.content.errors %}
@@ -75,12 +77,16 @@
                                 {% endif %}
                             </div>
                         </div>
+                      
                 </div>
                 <div class="modal-footer">
                   <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                  {{ form.submit(class="btn btn-primary" ) }}
+                  {{ form.submit5(class="btn btn-primary" ) }}
                 </div>
+                </form>
+              
               </div>
+
             </div>
           </div>
         <button type="button" class="btn btn-outline-success btn-md mr-1 mb-2"><i
@@ -112,8 +118,47 @@
    
                           <div class="bg-white">
                               <div class="d-flex flex-row fs-12">
+                                  {% if comment.author == current_user %}
+                                  <button type="button" class="btn btn-info btn-md mr-1 mb-2" data-toggle="modal" data-target="#modaledit{{comment.id}}">
+                                    Edit Comment
+                                  </button>
+                                  
+                                  <!-- Modal -->
+                                  <div class="modal fade" id="modaledit{{comment.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                      <div class="modal-content">
+                                        <div class="modal-header">
+                                          <h5 class="modal-title" id="exampleModalLongTitle">Your message</h5>
+                                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                          </button>
+                                        </div>
+                                        <form role="form" id="feedbackForm" method="POST">
+                                          {{ form.hidden_tag() }}
+                                        <div class="modal-body">
+                                                <div class="form-group">
+                                                    <div class="form-group">
+                                                      <textarea name="text" style="width: 100%;"></textarea>
+                                                    </div>
+                                                </div>
+                                              
+                                        </div>
+                                        <div class="modal-footer">     
+                                          <button type="button" class="btn btn-secondary btn-md mr-1 mb-2" data-dismiss="modal">Close</button>
+                                          <button class="btn btn-info btn-md mr-1 mb-2" name="com_id" value="{{comment.id}}">Edit</button>
+                                        
+                                        </div>
+                                        </form>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  
+                                  
+                                  <button class="btn btn-danger btn-md mr-1 mb-2" name="del_comment" value="{{ comment.id }}">Delete</button>
+                                      {% else %}
                                   <div class="like p-2 cursor"><i class="fa fa-thumbs-o-up"></i><span class="ml-1">Like</span></div>
                                   <div class="like p-2 cursor"><i class="fa fa-commenting-o"></i><span class="ml-1">Comment</span></div>
+                                  {% endif %}
                               </div>
                           </div>
 
