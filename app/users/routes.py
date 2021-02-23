@@ -233,11 +233,14 @@ def product_info(id_product):
             get_id = request.form.to_dict()
             comment_id = get_id["com_id"]
             find_comment = Comments.query.filter_by(id=comment_id).first()
-            find_comment.content = get_id["text"] 
-            db.session.add(find_comment)
-            db.session.commit()
-            flash("Your feedback has been updated!", "success")
-            return redirect(url_for("users.product_info", id_product=find_product.id))
+            if get_id["text"] != '':
+                find_comment.content = get_id["text"]
+                db.session.add(find_comment)
+                db.session.commit()
+                flash("Your feedback has been updated!", "success")
+                return redirect(url_for("users.product_info", id_product=find_product.id))
+            else:
+                flash("This field cannot be empty. Please try again.", "danger")
     return render_template("product_info.html", find_product=find_product,
-                           form=form, comments=comments, edit_form=edit_form)
+                           form=form, comments=comments)
     
