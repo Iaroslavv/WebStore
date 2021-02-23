@@ -221,11 +221,23 @@ def product_info(id_product):
     form = CommentForm()
     comments = Comments.query.filter_by(com_product=find_product).order_by(Comments.date_posted.desc()).all()
     user = current_user
-    if form.validate_on_submit():
-        new_comment = Comments(content=form.content.data, author=user, com_product=find_product)
-        db.session.add(new_comment)
-        db.session.commit()
-        flash("Your feedback has been posted!", "success")
-        return redirect(url_for("users.product_info", id_product=find_product.id))
-    return render_template("product_info.html", find_product=find_product, form=form, comments=comments)
+    if request.method == "POST":
+        if form.validate_on_submit():
+            new_comment = Comments(content=form.content.data, author=user, com_product=find_product)
+            db.session.add(new_comment)
+            db.session.commit()
+            flash("Your feedback has been posted!", "success")
+            return redirect(url_for("users.product_info", id_product=find_product.id))
+    
+        if request.form["com_id"]:
+            get_id = request.form.to_dict()
+            comment_id = get_id["com_id"]
+            find_comment = Comments.query.filter_by(id=comment_id).first()
+            find_comment.content = get_id["text"] 
+            db.session.add(find_comment)
+            db.session.commit()
+            flash("Your feedback has been updated!", "success")
+            return redirect(url_for("users.product_info", id_product=find_product.id))
+    return render_template("product_info.html", find_product=find_product,
+                           form=form, comments=comments, edit_form=edit_form)
     
