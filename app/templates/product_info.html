@@ -117,6 +117,8 @@
                               </div>
    
                           <div class="bg-white">
+                            <form role="form" method="POST">
+                              {{ form.hidden_tag() }}
                               <div class="d-flex flex-row fs-12">
                                   {% if comment.author == current_user %}
                                   <button type="button" class="btn btn-info btn-md mr-1 mb-2" data-toggle="modal" data-target="#modaledit{{comment.id}}">
@@ -133,8 +135,8 @@
                                             <span aria-hidden="true">&times;</span>
                                           </button>
                                         </div>
-                                        <form role="form" id="feedbackForm" method="POST">
-                                          {{ form.hidden_tag() }}
+                                      
+                                          
                                         <div class="modal-body">
                                                 <div class="form-group">
                                                     <div class="form-group">
@@ -143,23 +145,22 @@
                                                 </div>
                                               
                                         </div>
-                                        <div class="modal-footer">     
+                                        <div class="modal-footer">    
                                           <button type="button" class="btn btn-secondary btn-md mr-1 mb-2" data-dismiss="modal">Close</button>
                                           <button class="btn btn-info btn-md mr-1 mb-2" name="com_id" value="{{comment.id}}">Edit</button>
                                         
                                         </div>
-                                        </form>
+                                       
                                       </div>
                                     </div>
-                                  </div>
-                                  
-                                  
-                                  <button class="btn btn-danger btn-md mr-1 mb-2" name="del_comment" value="{{ comment.id }}">Delete</button>
-                                      {% else %}
-                                  <div class="like p-2 cursor"><i class="fa fa-thumbs-o-up"></i><span class="ml-1">Like</span></div>
-                                  <div class="like p-2 cursor"><i class="fa fa-commenting-o"></i><span class="ml-1">Comment</span></div>
+                                  </div>                                  
+                                  <button class="btn btn-danger btn-md mr-1 mb-2" name="del_comment" value="{{comment.id}}">Delete</button> 
+                                      {% else %}                                   
+                                        <div class="like p-2 cursor"><i class="fa fa-thumbs-o-up"></i><span class="ml-1">Like</span></div>
+                                        <div class="like p-2 cursor"><i class="fa fa-commenting-o"></i><span class="ml-1">Comment</span></div>
                                   {% endif %}
                               </div>
+                            </form>
                           </div>
 
                       </div>
