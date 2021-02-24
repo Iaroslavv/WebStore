@@ -88,7 +88,3 @@ class ContactForm(FlaskForm):
 class CommentForm(FlaskForm):
     content = TextAreaField("Leave your feedback here..", validators=[DataRequired()])
     submit5 = SubmitField("Post")
-
-
-class DeleteCommentForm(FlaskForm):
-    delete_com = SubmitField("Delete")
