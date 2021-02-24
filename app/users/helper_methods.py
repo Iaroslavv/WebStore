@@ -47,7 +47,6 @@ def del_items(prod_id):
     try:
         find_product.product_amount += prod.count
         user.prod_amount -= prod.count
-
         user.user_products.remove(find_product)
         db.session.commit()
     except StaleDataError:

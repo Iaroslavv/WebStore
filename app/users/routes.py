@@ -228,8 +228,8 @@ def product_info(id_product):
             db.session.commit()
             flash("Your feedback has been posted!", "success")
             return redirect(url_for("users.product_info", id_product=find_product.id))
-    
-        if request.form["com_id"]:
+
+        elif "com_id" in request.form:
             get_id = request.form.to_dict()
             comment_id = get_id["com_id"]
             find_comment = Comments.query.filter_by(id=comment_id).first()
@@ -241,6 +241,16 @@ def product_info(id_product):
                 return redirect(url_for("users.product_info", id_product=find_product.id))
             else:
                 flash("This field cannot be empty. Please try again.", "danger")
+
+        elif "del_comment" in request.form:
+            get_id = request.form.to_dict()
+            comment_id = get_id["del_comment"]
+            find_to_del = Comments.query.filter_by(id=comment_id, author=user, com_product=find_product).first()
+            db.session.delete(find_to_del)
+            db.session.commit()
+            flash("Your feedback has been deleted!", "success")
+            return redirect(url_for("users.product_info", id_product=find_product.id))
+        else:
+            flash("Oops, something went wrong..", "danger")
     return render_template("product_info.html", find_product=find_product,
-                           form=form, comments=comments)
-    
+                           form=form, comments=comments)  
