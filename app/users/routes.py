@@ -19,7 +19,6 @@ from app.users.forms import (
     DeleteAccount,
     ContactForm,
     CommentForm,
-    Couponform,
 )
 from app.users.utils import send_reset_email
 from app.users.helper_methods import find_product_by_name, del_items, del_user_acc
@@ -203,28 +202,26 @@ def contact():
 def cart():
     """Display items in the cart."""
     user = current_user
-    get_coupon = Couponform()
     prices = [x.price for x in current_user.user_products]
     products_to_calculate = [x.count for x in current_user.products]
     product_list = UserProd.query.filter_by(user=user)  # I removed .all() to be able to iterate over it
-    total_price = sum([int(first)*int(second) for first, second in zip(prices, products_to_calculate)])
     if request.method == "POST":
-        if get_coupon.validate_on_submit():
-            find_coupon = Coupon.query.filter_by(coupon=get_coupon.coupon.data).first()
+        if "apply" in request.form:
+            get_coupon = request.form.to_dict()
+            find_coupon = Coupon.query.filter_by(coupon=get_coupon["text"]).first()
             if find_coupon:
+                prices = [(x.price - (x.price * 0.05)) for x in current_user.user_products]
                 flash("Your coupon has been applied!", "success")
                 return redirect(url_for("users.cart"))
             else:
                 flash("Invalid coupon code. Please try again.", "danger")
-                print(find_coupon)
                 return redirect(url_for("users.cart"))
         if "prod_id" in request.form:
             prod_id = request.form.to_dict()
-            print(prod_id)
             return del_items(prod_id)
-        
+    total_price = sum([int(first)*int(second) for first, second in zip(prices, products_to_calculate)])  # doesn't update prices with discount
     return render_template("cart.html", product_list=product_list,
-                           total_price=total_price, form=form)
+                           total_price=total_price)
 
 
 @users.route("/product<int:id_product>", methods=["POST", "GET"])

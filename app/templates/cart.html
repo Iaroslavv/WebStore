@@ -64,22 +64,13 @@
           <div class="p-4">
             <p class="font-italic mb-4">If you have a coupon code, please enter it in the box below</p>
             <form method="POST">
-              {{ get_coupon.hidden_tag() }}
-            <div class="form-group">
+             
               <div class="form-group">
-                      {% if get_coupon.coupon.errors %}
-                      {{ get_coupon.coupon(class="form-control form-control is-invalid") }}
-                      <div class="invalid-feedback">
-                          {% for error in get_coupon.coupon.errors %}
-                              <span>{{ error }}</span>
-                          {% endfor %}
-                      </div>
-                  {% else %}
-                      {{ get_coupon.coupon(class="form-control border-0", placeholder="Leave your coupon here") }}
-                  {% endif %}
-              </div>
-          </div>
-          {{ get_coupon.submit6(class="btn btn-dark px-4 rounded-pill" ) }}
+                <div class="form-group">
+                  <textarea name="text" style="width: 100%;"></textarea>
+                </div>
+            </div>
+          <button class="btn btn-dark px-4 rounded-pill" name="apply">Apply</button>
         </form>
 
 
