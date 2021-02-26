@@ -223,12 +223,15 @@ def product_info(id_product):
     user = current_user
     if request.method == "POST":
         if form.validate_on_submit():
-            new_comment = Comments(content=form.content.data, author=user, com_product=find_product)
-            db.session.add(new_comment)
-            db.session.commit()
-            flash("Your feedback has been posted!", "success")
-            return redirect(url_for("users.product_info", id_product=find_product.id))
-
+            if current_user.is_authenticated:
+                new_comment = Comments(content=form.content.data, author=user, com_product=find_product)
+                db.session.add(new_comment)
+                db.session.commit()
+                flash("Your feedback has been posted!", "success")
+                return redirect(url_for("users.product_info", id_product=find_product.id))
+            else:
+                flash("You need to log in first to leave a feedback", "warning")
+                return redirect(url_for("users.product_info", id_product=find_product.id))
         elif "com_id" in request.form:
             get_id = request.form.to_dict()
             comment_id = get_id["com_id"]
