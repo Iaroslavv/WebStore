@@ -85,11 +85,6 @@ class ContactForm(FlaskForm):
     submit = SubmitField("Send")
 
 
-class Couponform(FlaskForm):
-    coupon = TextAreaField("Apply your coupon here", validators=[DataRequired()])
-    submit6 = SubmitField("Apply")
-
-
 class CommentForm(FlaskForm):
     content = TextAreaField("Leave your feedback here..", validators=[DataRequired()])
     submit5 = SubmitField("Post")
