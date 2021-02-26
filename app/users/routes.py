@@ -93,7 +93,7 @@ def account(username):
         db.session.add(user)
         db.session.commit()
         flash("Your password has been updated!", "success")
-        return redirect(url_for("users.account"))
+        return redirect(url_for("users.account", username=current_user.name))
     if change_name.validate_on_submit() and change_name.submit2.data:
         if not User.query.filter_by(name=change_name.new_name.data).first():
             user = current_user
@@ -103,7 +103,7 @@ def account(username):
             flash("Your name has been changed!", "success")
         else:
             flash("This username is already taken. Please choose another one", "danger")
-        return redirect(url_for("users.account"))
+        return redirect(url_for("users.account", username=current_user.name))
     if del_account.validate() and del_account.submit3.data:
         user = current_user
         return del_user_acc(user)
@@ -111,7 +111,7 @@ def account(username):
         if request.form["prod_id"]:
             prod_id = request.form.to_dict()
             return del_items(prod_id)
-        return redirect(url_for("users.account"))
+        return redirect(url_for("users.account", username=current_user.name))
     return render_template("account.html", form=form,
                            change_name=change_name, del_account=del_account,
                            product_list=product_list)
