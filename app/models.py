@@ -90,6 +90,14 @@ class Comments(db.Model):
         return f"Comment('{self.content}','{self.date_posted}')"
 
 
+class Coupon(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    coupon = db.Column(db.String(), nullable=False, default="GETCOUPON")
+
+    def __repr__(self):
+        return f"{self.coupon}"
+
+
 # one2many relationship between Category and Product
 class Category(db.Model):
     __tablename__ = "category"
