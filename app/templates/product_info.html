@@ -89,8 +89,9 @@
 
             </div>
           </div>
-        <button type="button" class="btn btn-outline-success btn-md mr-1 mb-2"><i
-            class="fas fa-shopping-cart pr-2"></i>Add to cart</button>
+          <form method="POST">
+          <button class="btn btn-outline-success btn-md mr-1 mb-2" name="name" value="{{find_product.product_name }}">Add to Cart</button>
+        </form>
       </div>
     </div>
     {% if not find_product.comments  %}

@@ -242,6 +242,10 @@ def product_info(id_product):
             else:
                 flash("This field cannot be empty. Please try again.", "danger")
 
+        elif "name" in request.form:
+            name = request.form.to_dict()
+            return find_product_by_name(name)
+
         elif "del_comment" in request.form:
             get_id = request.form.to_dict()
             comment_id = get_id["del_comment"]
