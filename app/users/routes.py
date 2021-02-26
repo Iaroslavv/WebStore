@@ -7,7 +7,7 @@ from flask import (
     current_app,
 )
 from app import db, bcrypt, mail
-from app.models import User, Product, UserProd, Comments
+from app.models import User, Product, UserProd, Comments, Coupon
 from flask_login import current_user, login_user, login_required, logout_user
 from app.users.forms import (
     SignUpForm,
@@ -205,12 +205,21 @@ def cart():
     prices = [x.price for x in current_user.user_products]
     products_to_calculate = [x.count for x in current_user.products]
     product_list = UserProd.query.filter_by(user=user)  # I removed .all() to be able to iterate over it
-    total_price = sum([int(first)*int(second) for first, second in zip(prices, products_to_calculate)])
     if request.method == "POST":
-        if request.form["prod_id"]:
+        if "apply" in request.form:
+            get_coupon = request.form.to_dict()
+            find_coupon = Coupon.query.filter_by(coupon=get_coupon["text"]).first()
+            if find_coupon:
+                prices = [(x.price - (x.price * 0.05)) for x in current_user.user_products]
+                flash("Your coupon has been applied!", "success")
+                return redirect(url_for("users.cart"))
+            else:
+                flash("Invalid coupon code. Please try again.", "danger")
+                return redirect(url_for("users.cart"))
+        if "prod_id" in request.form:
             prod_id = request.form.to_dict()
             return del_items(prod_id)
-        return redirect(url_for("users.cart"))
+    total_price = sum([int(first)*int(second) for first, second in zip(prices, products_to_calculate)])  # doesn't update prices with discount
     return render_template("cart.html", product_list=product_list,
                            total_price=total_price)
 

@@ -99,4 +99,12 @@ class Category(db.Model):
   
     def __repr__(self):
         return f"Category('{self.category_name}')"
+
+
+class Coupon(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    coupon = db.Column(db.String(), nullable=False, default="GETCOUPON")
+
+    def __repr__(self):
+        return f"{self.coupon}"
     

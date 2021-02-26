@@ -1,5 +1,5 @@
 from app import app, db, bcrypt
-from app.models import User, Category, Product
+from app.models import User, Category, Product, Coupon
 from PIL import Image
 import os
 import secrets
@@ -73,9 +73,15 @@ def add_categories():
     laptops.product_cat.extend(find_laptop_cat)
     db.session.commit()
 
+def add_coupon():
+    """Add coupon code."""
+    coupon_code = Coupon(coupon="GETCOUPON")
+    db.session.add(coupon_code)
+    db.session.commit()
 
 if __name__ == "__main__":
     create_tables()
     add_user()
     add_products()
     add_categories()
+    add_coupon()
