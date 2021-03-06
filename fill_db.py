@@ -1,5 +1,5 @@
 from app import app, db, bcrypt
-from app.models import User, Category, Product, Coupon
+from app.models import User, Category, Product, Coupon, Role
 from PIL import Image
 import os
 import secrets
@@ -18,7 +18,19 @@ def add_user():
     hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
     user = User(name="Iaroslav", email="yaroslaw.bulimov@yandex.ru",
                 password=hashed_password)
+    role = Role(name="user")
     db.session.add(user)
+    user.roles.append(role)
+    db.session.commit()
+
+
+def add_admin():
+    password = "admin"
+    hashed_password = bcrypt.generate_password_hash(password).decode("utf-8")
+    user = User(name="Admin", email="admin.admin@yandex.ru", password=hashed_password)
+    role = Role(name="admin")
+    db.session.add(user)
+    user.roles.append(role)
     db.session.commit()
 
 # do not need now
@@ -82,6 +94,7 @@ def add_coupon():
 if __name__ == "__main__":
     create_tables()
     add_user()
+    add_admin()
     add_products()
     add_categories()
     add_coupon()
