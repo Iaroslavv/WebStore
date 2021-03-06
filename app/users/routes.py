@@ -7,7 +7,7 @@ from flask import (
     current_app,
 )
 from app import db, bcrypt, mail
-from app.models import User, Product, UserProd, Comments, Coupon
+from app.models import User, Product, UserProd, Comments, Coupon, Role
 from flask_login import current_user, login_user, login_required, logout_user
 from app.users.forms import (
     SignUpForm,
@@ -43,7 +43,9 @@ def signup():
         user = User(name=form.name.data,
                     email=form.email.data,
                     password=hashed_password)
+        role = Role(name="user")
         db.session.add(user)
+        user.roles.append(role)
         db.session.commit()
         flash('Your account has been created! You are now able to log in', 'success')
         return redirect(url_for('users.login'))
