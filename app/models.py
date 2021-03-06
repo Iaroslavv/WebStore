@@ -3,7 +3,7 @@ from flask_login import UserMixin
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from flask import current_app
 from datetime import datetime
-
+from flask_security import RoleMixin
 
 
 @login_manager.user_loader
@@ -27,6 +27,12 @@ class UserProd(db.Model):
         return f"{self.count}" 
 
 
+class Role(db.Model, RoleMixin):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(30))
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+
+
 class User(db.Model, UserMixin):
     __tablename__ = "user"
     id = db.Column(db.Integer, primary_key=True)
@@ -39,10 +45,16 @@ class User(db.Model, UserMixin):
                                     passive_deletes=True, backref="products_user"
                                     )
     comments = db.relationship("Comments", backref="author", lazy=True)
+    roles = db.relationship("Role", backref="user_role", lazy="dynamic")
 
     def get_reset_token(self, expires_sec=1800):
         serial = Serializer(current_app.config["SECRET_KEY"], expires_sec)
         return serial.dumps({"user_id": self.id}).decode("utf-8")
+    
+    def has_role(self, role):
+        """Define whether user has an access to the admin panel."""
+        if role in self.roles:
+            return role
  
     @staticmethod
     def verify_reset_token(token) -> str:
