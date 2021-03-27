@@ -10,16 +10,16 @@ And you're ready to go!
 ____
 ## What does it include and what can you test here as a QA Engineer?
 Practice with sign up and login forms
-![sign up](https://github.com/Iaroslavv/WebStore/raw/master/signup.png)
-![login](https://github.com/Iaroslavv/WebStore/raw/master/login.png) 
+![sign up](https://github.com/Iaroslavv/WebStore/raw/master/pro_images/signup.png)
+![login](https://github.com/Iaroslavv/WebStore/raw/master/pro_images/login.png) 
 
 As you see there's plenty of bugs hidden in the project. 
 ____
 ### Add products to the cart and then test it!
-![products](https://github.com/Iaroslavv/WebStore/raw/master/products.png)
+![products](https://github.com/Iaroslavv/WebStore/raw/master/pro_images/products.png)
 ____
 ### Leave your comments for the products
-![comments](https://github.com/Iaroslavv/WebStore/raw/master/comments.png)
+![comments](https://github.com/Iaroslavv/WebStore/raw/master/pro_images/comments.png)
 
 
 
